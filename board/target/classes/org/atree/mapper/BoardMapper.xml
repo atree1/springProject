@@ -1,0 +1,75 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="org.atree.mapper.BoardMapper">
+	<sql id="search">
+		<if test="types != null">
+			<foreach item="item" collection="types" open="AND ("
+				close=")" separator="OR">
+
+				<if test="item == 't'.toString()">
+					title like concat('%', #{keyword}, '%')
+				</if>
+				<if test="item == 'c'.toString()">
+					content like concat('%', #{keyword}, '%')
+				</if>
+				<if test="item == 'w'.toString()">
+					writer like concat('%', #{keyword}, '%')
+				</if>
+
+			</foreach>
+		</if>
+	</sql>
+	<select id="read" resultType="org.atree.domain.BoardVO">
+		select *
+		from tbl_board
+		where
+		bno=${bno}
+
+	</select>
+	<insert id="create">
+		insert into
+		tbl_board(title,content,writer)
+		values(#{title},#{content},#{writer})
+	</insert>
+
+	<select id="getList" resultType="org.atree.domain.BoardVO">
+
+		select *
+		from tbl_board
+		where
+		1=1
+
+		<include refid="search"></include>
+
+		and bno>(select max(bno) -100000 from tbl_board) and deleted='N'
+		order
+		by bno desc limit #{skip},#{display}
+	</select>
+
+	<select id="count" resultType="integer">
+
+		select count(*)
+		from tbl_board
+		where 1 = 1
+
+		<include refid="search"></include>
+
+		and bno > (select max(bno) - 100000 from tbl_board)
+	</select>
+
+	<update id="update">
+		update tbl_board
+		set title=#{title},
+		content=#{content} , updatedate=now() where
+		bno=#{bno}
+	</update>
+
+	<update id="delete">
+		update tbl_board
+		set deleted='Y' where bno=#{bno}
+
+	</update>
+</mapper>
+
