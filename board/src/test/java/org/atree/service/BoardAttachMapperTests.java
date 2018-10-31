@@ -1,14 +1,11 @@
 package org.atree.service;
 
-import org.atree.domain.BoardAttachDTO;
-import org.atree.mapper.UploadMapper;
+
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 
-import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -16,9 +13,6 @@ import lombok.extern.log4j.Log4j;
 @Log4j
 public class BoardAttachMapperTests {
 
-	@Setter(onMethod_=@Autowired)
-	UploadMapper mapper;
-	
 	@Test
 	public void test(){
 		

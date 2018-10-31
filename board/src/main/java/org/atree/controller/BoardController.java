@@ -1,6 +1,10 @@
 package org.atree.controller;
 
 
+import java.io.IOException;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -19,6 +23,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -78,7 +83,9 @@ public class BoardController {
 	@PostMapping("/remove")
 	public String remove(@ModelAttribute("pageObj")PageParam pageParam,@ModelAttribute("board")BoardVO boardVO,RedirectAttributes rttr) {
 		int result=service.remove(boardVO);
-		
+		if(result==1) {
+		List<BoardAttachDTO> attachList=service.getAttachList(pageParam.getBno());
+		}
 		rttr.addFlashAttribute("result",result==1?"SUCCESS":"FAILED");
 		return pageParam.getLink("redirect:/board/list");
 	}
@@ -97,4 +104,25 @@ public class BoardController {
 		}
 		return new ResponseEntity<> (result,HttpStatus.OK);
 	}
+	private void deleteFiles(List<BoardAttachDTO> attachList) {
+		if(attachList==null||attachList.size()==0) {
+			return;
+		}
+		attachList.forEach(attach->{
+			try {
+				Path file=Paths.get("C:\\upload\\"+attach.getUploadPath()+"\\"+attach.getUuid()+"_"+attach.getFileName());
+				
+				Files.deleteIfExists(file);
+			
+				if(Files.probeContentType(file).startsWith("image")) {
+					Path thumbNail=Paths.get("C:\\upload\\"+attach.getUploadPath()+"\\s_"+attach.getUuid()+"_"+attach.getFileName());
+					Files.delete(thumbNail);
+				}
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		});
+	}
+
 }

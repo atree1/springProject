@@ -83,37 +83,7 @@
 <script>
 	$(document).ready(function() {
 		var uploadResult=$('.uploadResult');
-		function showUploadResult(uploadResultArr) {
-			if(!uploadResultArr||uploadResultArr.length==0){
-				return;
-			}
-			var uploadUL=$(".uploadResult ul");
-			var str="";
-			$(uploadResultArr).each(function(i,obj){
-				
-				if(obj.fileType){
-					var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
-					str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"' ><div>";
-					str += "<span> "+ obj.fileName+"</span>";
-					str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-icons btn-rounded btn-outline-warning'>x</button><br>";
-					str += "<img src='/display?fileName="+fileCallPath+"'>";
-					str += "</div>";
-					str +"</li>";
-				}else{
-					var fileCallPath =  encodeURIComponent( obj.uploadPath+"/"+ obj.uuid +"_"+obj.fileName);			      
-				    var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
-				      
-					str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"' ><div>";
-					str += "<span> "+ obj.fileName+"</span>";
-					str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn-rounded btn-outline-warning'>x</button><br>";
-					str += "<img src='/resources/images/favicon.png'></a>";
-					str += "</div>";
-					str +"</li>";
-				}
-			});
-			uploadUL.append(str);
-			
-		}
+		
 		$('.uploadResult').on("click","button",function(e){
 			e.preventDefault();
 			var targetFile=$(this).data("file");
@@ -191,6 +161,37 @@
 				}
 			});
 		});
+		function showUploadResult(uploadResultArr) {
+			if(!uploadResultArr||uploadResultArr.length==0){
+				return;
+			}
+			var uploadUL=$(".uploadResult ul");
+			var str="";
+			$(uploadResultArr).each(function(i,obj){
+				
+				if(obj.fileType){
+					var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
+					str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"' ><div>";
+					str += "<span> "+ obj.fileName+"</span>";
+					str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-icons btn-rounded btn-outline-warning'>x</button><br>";
+					str += "<img src='/display?fileName="+fileCallPath+"'>";
+					str += "</div>";
+					str +"</li>";
+				}else{
+					var fileCallPath =  encodeURIComponent( obj.uploadPath+"/"+ obj.uuid +"_"+obj.fileName);			      
+				    var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+				      
+					str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"' ><div>";
+					str += "<span> "+ obj.fileName+"</span>";
+					str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn-rounded btn-outline-warning'>x</button><br>";
+					str += "<img src='/resources/images/favicon.png'></a>";
+					str += "</div>";
+					str +"</li>";
+				}
+			});
+			uploadUL.append(str);
+			
+		}
 	});
 	
 </script>

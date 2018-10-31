@@ -12,7 +12,7 @@ public class BoardAttachDTO {
 	private char fType;
 	private int bno;
 	
-	public char getImg() {
+	public char fType() {
 		if(fileType) {
 			
 			return 'i';
