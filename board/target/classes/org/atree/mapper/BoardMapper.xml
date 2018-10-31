@@ -21,6 +21,10 @@
 			</foreach>
 		</if>
 	</sql>
+	<select id="maxBno" resultType="integer">
+		select max(bno)
+		from tbl_board where bno>0;
+	</select>
 	<select id="read" resultType="org.atree.domain.BoardVO">
 		select *
 		from tbl_board

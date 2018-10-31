@@ -2,22 +2,42 @@ package org.atree.service;
 
 import java.util.List;
 
+import org.atree.domain.BoardAttachDTO;
 import org.atree.domain.BoardVO;
 import org.atree.domain.PageParam;
+import org.atree.mapper.BoardAttachMapper;
 import org.atree.mapper.BoardMapper;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
-import lombok.AllArgsConstructor;
+import lombok.Setter;
+import lombok.extern.log4j.Log4j;
 
 @Service
-@AllArgsConstructor
+@Log4j
 public class BoardServiceImpl implements BoardService{
 
+	@Setter(onMethod_=@Autowired)
 	BoardMapper mapper;
+	
+	@Setter(onMethod_=@Autowired)
+	BoardAttachMapper attachMapper;
+	@Transactional
 	@Override
 	public int register(BoardVO vo) {
 		// TODO Auto-generated method stub
-		return mapper.create(vo);
+		int result=mapper.create(vo);
+		
+		if(vo.getAttachList()==null||vo.getAttachList().size()<=0) {
+			return result;
+		}
+		int bno=mapper.maxBno();
+		for (BoardAttachDTO attach:vo.getAttachList()) {
+			attach.setBno(bno);
+			attachMapper.insert(attach);
+		}
+		return result;
 	}
 
 	@Override
@@ -31,10 +51,11 @@ public class BoardServiceImpl implements BoardService{
 		// TODO Auto-generated method stub
 		return mapper.update(vo);
 	}
-
+	@Transactional
 	@Override
 	public int remove(BoardVO vo) {
 		// TODO Auto-generated method stub
+		attachMapper.deleteAll(vo.getBno());
 		return mapper.delete(vo);
 	}
 
@@ -48,6 +69,12 @@ public class BoardServiceImpl implements BoardService{
 	public int getTotal(PageParam pageParam) {
 		// TODO Auto-generated method stub
 		return mapper.count(pageParam);
+	}
+
+	@Override
+	public List<BoardAttachDTO> getAttachList(int bno) {
+		// TODO Auto-generated method stub
+		return attachMapper.findByBno(bno);
 	}
 
 	

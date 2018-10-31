@@ -13,7 +13,7 @@ public interface BoardMapper {
 	public int delete(BoardVO vo);
 	public List<BoardVO> getList(PageParam pageParam);
 	public int count(PageParam pageParam);
-	
+	public int maxBno();
 	
 	
 }

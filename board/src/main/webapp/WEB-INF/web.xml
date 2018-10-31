@@ -35,6 +35,7 @@
 			<location>C:\\upload\\temp</location>
 			<max-file-size>20971520</max-file-size> <!-- 20MB 짜리 파일 업로드 가능 -->
 			<max-request-size>20971520</max-request-size> <!-- 토탈 20MB -->
+			<file-size-threshold>20971520</file-size-threshold>
 		</multipart-config>
 
 	</servlet>

@@ -2,11 +2,13 @@ package org.atree.mapper;
 
 import java.util.List;
 
-import org.atree.domain.BoardAttachVO;
+import org.atree.domain.BoardAttachDTO;
 
 public interface BoardAttachMapper {
 
-	public int insert(BoardAttachVO vo);
-	public int delete(BoardAttachVO vo);
-	public List<BoardAttachVO> findByBno(BoardAttachVO vo);
+	public int insert(BoardAttachDTO vo);
+	public int delete(String uuid);
+	public int deleteAll(int bno);
+	
+	public List<BoardAttachDTO> findByBno(int bno);
 }

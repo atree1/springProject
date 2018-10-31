@@ -23,7 +23,7 @@
 			<a href="/board/register"><button class="btn btn-dark btn-fw">Register</button></a>
 			</p>
 			<div class="table-responsive">
-				<table class="table table-dark">
+				<table class="table table-stripped">
 					<thead>
 						<tr>
 							<th>BNO</th>

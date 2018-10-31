@@ -1,7 +1,7 @@
 package org.atree.service;
 
-import org.atree.domain.BoardAttachVO;
-import org.atree.mapper.BoardAttachMapper;
+import org.atree.domain.BoardAttachDTO;
+import org.atree.mapper.UploadMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,7 +17,7 @@ import lombok.extern.log4j.Log4j;
 public class BoardAttachMapperTests {
 
 	@Setter(onMethod_=@Autowired)
-	BoardAttachMapper mapper;
+	UploadMapper mapper;
 	
 	@Test
 	public void test(){

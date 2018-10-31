@@ -5,15 +5,18 @@
 <mapper namespace="org.atree.mapper.BoardAttachMapper">
 
 	<insert id="insert">
-	insert into tbl_attach(uuid,uploadpath,filename,filetype,bno)
-	values (#{uuid},#{uploadpath},#{filename},#{filetype},#{bno})
+	insert into tbl_attach(uuid,uploadpath,filename,ftype,bno)
+	values (#{uuid},#{uploadPath},#{fileName},#{img},#{bno})
 	</insert>
 	
 	<delete id="delete">
 	delete from tbl_attach where uuid=#{uuid}
 	</delete>
+	<delete id="deleteAll">
+	delete from tbl_attach where bno=#{bno}
+	</delete>
 	
-	<select id="findByBno" resultType="org.atree.domain.BoardAttachVO">
+	<select id="findByBno" resultType="org.atree.domain.BoardAttachDTO">
 	select * from tbl_attach where bno=#{bno}
 	
 	</select>

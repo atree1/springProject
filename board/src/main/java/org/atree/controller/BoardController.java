@@ -1,11 +1,17 @@
 package org.atree.controller;
 
 
+import java.util.List;
+
 import javax.validation.Valid;
 
+import org.atree.domain.BoardAttachDTO;
 import org.atree.domain.BoardVO;
 import org.atree.domain.PageParam;
 import org.atree.service.BoardService;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.MediaType;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
@@ -13,6 +19,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
 import lombok.AllArgsConstructor;
@@ -41,7 +48,10 @@ public class BoardController {
 	public String registerPost(RedirectAttributes rttr, @ModelAttribute ("board")@Valid BoardVO boardVO, BindingResult bindingResult) {
 		log.info("-----------------------------------------------");
 		log.info("binding:"+bindingResult);
-		
+		if(boardVO.getAttachList()!=null) {
+			log.info("-----------------------------------------------");
+			boardVO.getAttachList().forEach(attach->log.info(attach));
+		}
 		if(bindingResult.hasErrors()) {
 			log.info("Has Error .........................");
 			return "redirect:/board/register";
@@ -72,5 +82,19 @@ public class BoardController {
 		rttr.addFlashAttribute("result",result==1?"SUCCESS":"FAILED");
 		return pageParam.getLink("redirect:/board/list");
 	}
-
+	@GetMapping(value="/getAttachList",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+	@ResponseBody
+	public ResponseEntity<List<BoardAttachDTO>> getAttachList(int bno){
+		log.info("------------------------------------------------------");
+		log.info("------------------------------------------------------");
+		log.info("getAttachList json");
+		List<BoardAttachDTO> result=service.getAttachList(bno);
+		for (BoardAttachDTO dto : result) {
+			log.info(dto.getFType());
+			if(dto.getFType()=='i') {
+			dto.setFileType(true);}
+			log.info(dto.isFileType());
+		}
+		return new ResponseEntity<> (result,HttpStatus.OK);
+	}
 }

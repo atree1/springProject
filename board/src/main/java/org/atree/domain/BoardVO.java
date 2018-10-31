@@ -3,8 +3,6 @@ package org.atree.domain;
 import java.util.Date;
 import java.util.List;
 
-import javax.validation.constraints.Pattern;
-
 import org.hibernate.validator.constraints.NotEmpty;
 import org.springframework.format.annotation.DateTimeFormat;
 
@@ -20,5 +18,5 @@ public class BoardVO {
 	private Date regdate,updatedate;
 	private char deleted;
 	private int replyCnt;
-	private List<BoardAttachVO> attachList;
+	private List<BoardAttachDTO> attachList;
 }
