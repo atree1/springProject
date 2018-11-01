@@ -3,6 +3,7 @@ package org.atree.controller;
 import org.atree.domain.UserVO;
 import org.atree.service.UserService;
 import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -24,10 +25,10 @@ public class UserController {
 		log.info("login get~~~~");
 	}
 	@PostMapping("/login")
-	public String login(@ModelAttribute("user") UserVO user) {
+	public String login(@ModelAttribute("user") UserVO user,Model model) {
 		log.info("login post~~~~~~");
 	
-		user=service.get(user);
+		model.addAttribute("user",service.get(user));
 		
 		log.info(user);
 		

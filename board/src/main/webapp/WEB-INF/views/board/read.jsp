@@ -269,21 +269,22 @@ float:right;
 			.submit();
 		})
 		var result = '<c:out value="${result}"/>';
-var msg = $('#myModal');
+		var msg = $('#myModal');
 
-checkModal(result);
-history.replaceState({}, null, null);
+		checkModal(result);
+		history.replaceState({}, null, null);
 
-function checkModal(result) {
-	if (result === '' || history.state) {
-		return;
-	}
+		function checkModal(result) {
+			if (result === '' || history.state) {
+			return;
+			}
 
-	if (result === 'SUCCESS') {
-		$(".modal-body").html("작업이 완료되었습니다.");
-		msg.modal("show");
-	}
-}
+			if (result === 'SUCCESS') {
+				$(".modal-body").html("작업이 완료되었습니다.");
+				msg.modal("show");
+			}
+	
+		}
 	
 	var bnoValue='<c:out value="${board.bno}"/>';
 	var replyUL=$('.chat');
@@ -302,7 +303,9 @@ function checkModal(result) {
 					str+="<li class='left clearfix' data-rno='"+list[i].rno+"'>";
 					str+=" <div><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>";
 					str+="<small class='pull-right text-muted'>"+replyService.displayTime(list[i].replydate)+"</small></div>";
-					str+="<p>"+list[i].reply+"</p></div></li>";
+					str+="<p>"+list[i].reply+"</p>";
+					
+					str+="<button id='addDoubleReplyBtn' data-seq='"+list[i].seq+"' data-rno='"+list[i].rno+"'>답글</button></div></li>"
 				}
 				
 				
@@ -333,7 +336,9 @@ function checkModal(result) {
 			var reply={
 					reply:modalInputReply.val(),
 					replyer:modalInputReplyer.val(),
-					bno:bnoValue
+					bno:bnoValue,
+					parent:bnoValue,
+					seq:1
 			};
 			replyService.add(reply,function(result){
 				alert(result)
@@ -379,5 +384,23 @@ function checkModal(result) {
 		modalCloseBtn.on("click",function(e){
 			modal.modal("hide");
 		})
+		$(".chat").on('click','li button',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			var btn=e.target;
+			var seq=btn.getAttribute("data-seq");
+			var rno=btn.getAttribute("data-rno");
+			console.log(seq);
+			console.log(rno);
+			modal.find("input").val("");
+			modalInputReplyDate.closest('div').hide();
+			modal.find("button[id!='modalCloseBtn']").hide();
+			
+		   modalRegBtn.show();
+			modal.modal('show');
+			
+			
+			
+		});
 	});
 </script>

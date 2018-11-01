@@ -9,7 +9,7 @@ import lombok.Data;
 @Data
 public class ReplyVO {
 
-	private int rno,bno;
+	private int rno,bno,parent,seq;
 	@NotEmpty(message="����� �Է��ϼ���")
 	private String reply;
 	private String replyer;

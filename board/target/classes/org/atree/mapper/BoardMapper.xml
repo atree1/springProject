@@ -79,5 +79,12 @@
 	<update id="updateReplyCnt">
 		update tbl_board set replycnt=replycnt+#{amount} where bno=#{bno}
 	</update>
+	
+	<insert id="insertSelectKey">
+		insert into
+		tbl_board(title,content,writer)
+		values(#{title},#{content},#{writer})
+		<selectKey resultType="int" keyProperty="bno" order="AFTER"> select max(bno) from tbl_board</selectKey>
+	</insert>
 </mapper>
 

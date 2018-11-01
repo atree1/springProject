@@ -21,14 +21,16 @@ public class AfterLoginInterceptor extends HandlerInterceptorAdapter{
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
 		
-		Object result=modelAndView.getModel().get("member");
-		log.info(result);
+		Object result=modelAndView.getModel().get("user");
+		log.info("result:"+result);
+		log.info(result==null);
 		if(result==null) {
 			return;
 		}
 		UserVO userVO=(UserVO)result;
 		
-		Cookie loginCookie=new Cookie("lcookie",URLEncoder.encode(userVO.getUsername(), "UTF-8"));
+		Cookie loginCookie=new Cookie("lcookie",URLEncoder.encode(userVO.getUserid(), "UTF-8"));
+		log.info(loginCookie);
 		loginCookie.setMaxAge(60*1);
 		response.addCookie(loginCookie);
 		log.info(userVO);

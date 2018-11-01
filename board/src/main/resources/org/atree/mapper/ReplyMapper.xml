@@ -47,5 +47,17 @@
 		set deleted='Y' where rno=#{rno}
 
 	</update>
+	
+	<insert id="depthInsert">
+			insert into
+		tbl_reply(bno,reply,replyer,parent,seq)
+		
+		values(#{bno},#{reply},#{replyer},#{parent},#{seq})
+		
+	</insert>
+	<select id="depthGetList">
+		select * from tbl_reply
+		order by parent asc seq desc
+	</select>
 </mapper>
 

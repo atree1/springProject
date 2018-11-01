@@ -28,14 +28,14 @@ public class BoardServiceImpl implements BoardService{
 	@Override
 	public int register(BoardVO vo) {
 		// TODO Auto-generated method stub
-		int result=mapper.create(vo);
-		
+		//int result=mapper.create(vo);
+		int result=mapper.insertSelectKey(vo);
 		if(vo.getAttachList()==null||vo.getAttachList().size()<=0) {
 			return result;
 		}
-		int bno=mapper.maxBno();
+		
 		for (BoardAttachDTO attach:vo.getAttachList()) {
-			attach.setBno(bno);
+			attach.setBno(vo.getBno());
 			attachMapper.insert(attach);
 		}
 		return result;

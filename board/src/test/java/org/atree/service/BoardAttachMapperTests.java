@@ -1,7 +1,8 @@
 package org.atree.service;
 
 
-import org.atree.mapper.BoardAttachMapper;
+import org.atree.domain.BoardVO;
+import org.atree.mapper.BoardMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,10 +18,14 @@ import lombok.extern.log4j.Log4j;
 public class BoardAttachMapperTests {
 
 	@Setter(onMethod_=@Autowired)
-	BoardAttachMapper mapper;
+	BoardMapper mapper;
 	@Test
 	public void test(){
-		log.info(mapper.findByBno(458978));
-	
+		BoardVO vo =new BoardVO();
+		vo.setTitle("as");
+		vo.setContent("asdas");
+		vo.setWriter("asd");
+		log.info(mapper.insertSelectKey(vo));
+	log.info(vo.getBno());
 	}
 }

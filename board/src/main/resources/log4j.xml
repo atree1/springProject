@@ -11,6 +11,9 @@
 	</appender>
 	
 	<!-- Application Loggers -->
+	<logger name="org.atree.interceptor">
+		<level value="info" />
+	</logger>
 	<logger name="org.atree.controller">
 		<level value="info" />
 	</logger>
