@@ -14,7 +14,9 @@
 	<logger name="org.atree.controller">
 		<level value="info" />
 	</logger>
-	
+	<logger name="org.atree.service">
+		<level value="info" />
+	</logger>
 	<!-- 3rdparty Loggers -->
 	<logger name="org.springframework.core">
 		<level value="info" />

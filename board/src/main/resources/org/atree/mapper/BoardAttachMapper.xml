@@ -5,8 +5,8 @@
 <mapper namespace="org.atree.mapper.BoardAttachMapper">
 
 	<insert id="insert">
-	insert into tbl_attach(uuid,uploadpath,filename,ftype,bno)
-	values (#{uuid},#{uploadPath},#{fileName},#{img},#{bno})
+	insert into tbl_attach(uuid,uploadpath,filename,fileType,bno)
+	values (#{uuid},#{uploadPath},#{fileName},#{fileType},#{bno})
 	</insert>
 	
 	<delete id="delete">

@@ -6,9 +6,20 @@
 
 
 <style>
+#card{
+width:100%;
+}
+@media (min-width: 768px){
+.col-md-6 {
+     flex: 0 0 100%; 
+    max-width: 100%; 
+}
+}
+
 .uploadResult {
 	width: 100%;
 	background-color: gray;
+	overflow:auto;
 }
 
 .uploadResult ul {
@@ -53,7 +64,7 @@
 	align-items: center;
 }
 </style>
-<div class="col-md-6 grid-margin stretch-card">
+<div id=card class="col-md-6 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
 			<h4 class="card-title">Basic form</h4>
@@ -81,20 +92,23 @@
 				<label for="exampleTextarea1">CONTENT</label>
 				<textarea class="form-control" id="exampleTextarea1" rows="2"
 					name='content'><c:out value="${board.content}" /></textarea>
+				
 				<div class="form-group">
-					<label>File upload</label> <input type="file" name="uploadFile"
-						multiple="multiple" class="file-upload-default">
-					<div class="input-group col-xs-12">
-						<input type="text" class="form-control file-upload-info" disabled
-							placeholder="Upload Image"> </span>
-					</div>
+					<input type="file" id='files' name='uploadFile' class="form-control file-upload-info"
+						multiple="multiple">
 
-					<div class='uploadResult'></div>
 				</div>
-				<input type='hidden' name='page' value='${pageObj.page}'> <input
-					type="hidden" name='bno' value='${board.bno}'> <input
-					type='hidden' name='type' value='${pageObj.type}'> <input
-					type='hidden' name='keyword' value='${pageObj.keyword}'>
+
+					<div class='uploadResult'>
+					<ul>
+					</ul>
+					</div>
+				</div>
+				<input type='hidden' name='page' value='${pageObj.page}'>
+				 <input	type="hidden" name='bno' value='${board.bno}'> 
+				 <input type='hidden' name='type' value='${pageObj.type}'> 
+				 <input type='hidden' name='keyword' value='${pageObj.keyword}'>
+				<input type='hidden' name='display' value='${pageObj.display}'>
 
 			</form>
 
@@ -103,6 +117,7 @@
 					type='hidden' name='page' value='${pageObj.page}'> <input
 					type='hidden' name='type' value='${pageObj.type}'> <input
 					type='hidden' name='keyword' value='${pageObj.keyword}'>
+					<input type='hidden' name='display' value='${pageObj.display}'>
 				<button id='modifyBtn' class="btn btn-success">수정</button>
 				<button id='removeBtn' class="btn btn-warning">삭제</button>
 				<button id='cancleBtn' class="btn btn-danger">취소</button>
@@ -139,9 +154,7 @@
 						str += "<img src='/display?fileName="+fileCallPath+"'>";
 						str += "</div>";
 						str +"</li>";
-						str += "<img src='/display?fileName="+fileCallPath+"'>";
-						str += "</div>";
-						str +"</li>";
+					
 					}else{
 						  
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
@@ -149,18 +162,33 @@
 						str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn-rounded btn-outline-warning'>x</button><br>";
 						str += "<img src='/resources/images/favicon.png'></a>";
 						str += "</div>";
-						str +"</li>";
-					}
-				});
+						str +"</li>";}
+					
+					});
+				
+				$(".uploadResult ul").html(str);
+			});
+		})();
 		var actionForm=$('#actionForm');
 		$('#modifyBtn').on("click", function(e) {
 			e.preventDefault();
-			$("#modifyForm").submit();
-		})
+			var str="";
+			$(".uploadResult ul li").each(function(i,obj){
+				var jobj=$(obj);
+				console.log(jobj);
+				str += "<input type='hidden' name='attachList["+i+"].fileName' value='"+jobj.data("filename")+"'>";
+				str += "<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
+				str += "<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("path")+"'>";
+				str += "<input type='hidden' name='attachList["+i+"].fileType' value='"+ jobj.data("type")+"'>";
+				
+			})
+			
+			$("#modifyForm").append(str).submit();
+		});
 		$('#removeBtn').on("click", function(e) {
 			e.preventDefault();
 			$("#actionForm").attr("method",'post').attr("action","/board/remove").submit();
-		})
+		});
 		$(".uploadResult").on("click","button",function(e){
 			if(confirm("remove this file?")){
 				var targetLi=$(this).closest("li");
@@ -245,5 +273,5 @@
 		
 		
 	
-	});
+	})
 </script>

@@ -36,7 +36,7 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class BoardController {
 
-	BoardService service; 
+	private BoardService service; 
 	@GetMapping("/list")
 	public void list(@ModelAttribute("pageObj")PageParam pageParam,Model model) {
 		log.info("list get......................");
@@ -70,6 +70,7 @@ public class BoardController {
 	@GetMapping({"/read","/modify"})
 	public void read(@ModelAttribute("pageObj")PageParam pageParam,Model model) {
 		log.info("read page..........");
+		log.info(pageParam);
 		model.addAttribute("board",service.read(pageParam));
 	}
 	
@@ -77,6 +78,7 @@ public class BoardController {
 	public String modify(@ModelAttribute("pageObj")PageParam pageParam,@ModelAttribute("board")BoardVO boardVO,RedirectAttributes rttr) {
 		int result=service.modify(boardVO);
 		log.info("post modify......................................");
+		log.info(pageParam);
 		rttr.addFlashAttribute("result",result==1?"SUCCESS":"FAILED");
 		return pageParam.getLink("redirect:/board/read");
 	}
@@ -92,17 +94,9 @@ public class BoardController {
 	@GetMapping(value="/getAttachList",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<BoardAttachDTO>> getAttachList(int bno){
-		log.info("------------------------------------------------------");
-		log.info("------------------------------------------------------");
-		log.info("getAttachList json");
+		
 		List<BoardAttachDTO> result=service.getAttachList(bno);
-		for (BoardAttachDTO dto : result) {
-			log.info(dto.getFType());
-			if(dto.getFType()=='i') {
-			dto.setFileType(true);}
-			log.info(dto.isFileType());
-		}
-		return new ResponseEntity<> (result,HttpStatus.OK);
+		return new ResponseEntity<> (service.getAttachList(bno),HttpStatus.OK);
 	}
 	private void deleteFiles(List<BoardAttachDTO> attachList) {
 		if(attachList==null||attachList.size()==0) {

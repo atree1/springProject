@@ -11,7 +11,7 @@ import lombok.Data;
 @Data
 public class BoardVO {
 	private Integer bno;
-	@NotEmpty(message="°ø¹é ±ÝÁö")
+	@NotEmpty(message="ï¿½ï¿½ï¿½ï¿½ ï¿½ï¿½ï¿½ï¿½")
 	private String title,content,writer;
 	
 	@DateTimeFormat(pattern="yyyy-MM-dd")

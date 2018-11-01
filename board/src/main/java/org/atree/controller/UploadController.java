@@ -94,7 +94,7 @@ public class UploadController {
 				if (checkImageType(saveFile)) {
 
 					attachDTO.setFileType(true);
-
+				
 					FileOutputStream thumbnail = new FileOutputStream(new File(uploadPath, "s_" + uploadFileName));
 
 					Thumbnailator.createThumbnail(multipartFile.getInputStream(), thumbnail, 100, 100);
@@ -117,11 +117,11 @@ public class UploadController {
 	@ResponseBody
 	public ResponseEntity<byte[]> getFile(String fileName) {
 
-		log.info("fileName: " + fileName);
+		//log.info("fileName: " + fileName);
 
 		File file = new File("c:\\upload\\" + fileName);
 
-		log.info("file: " + file);
+		//log.info("file: " + file);
 
 		ResponseEntity<byte[]> result = null;
 

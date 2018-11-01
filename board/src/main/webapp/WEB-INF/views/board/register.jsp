@@ -9,10 +9,22 @@
 
 <%@include file="../includes/header.jsp"%>
 <style>
- .uploadResult{
- 	width:100%;
- 	background-color:gray;
- }
+#card{
+width:100%;
+}
+@media (min-width: 768px){
+.col-md-6 {
+     flex: 0 0 100%; 
+    max-width: 100%; 
+}
+}
+
+.uploadResult {
+	width: 100%;
+	background-color: gray;
+	overflow:auto;
+}
+
 .uploadResult ul{
   display:flex;
   flex-flow: row;
@@ -35,7 +47,7 @@
 
 </style>
 
-<div class="col-md-12 grid-margin stretch-card">
+<div id='card' class="col-md-12 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
 			<form id='registerForm' class="forms-sample" method="post">

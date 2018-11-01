@@ -7,19 +7,15 @@ import lombok.Data;
 @Data
 public class PageParam {
 
-	private int page, bno, start, end, total, display;
+	private int page, bno, start, end, total, display,rno;
 	private double per;
 	private boolean prev, next;
 	private String type, keyword;
 	private String[] types;
 
-	public void setDisplay(int display) {
-		this.display = display;
-		this.per = (double) display;
-	}
 
 	public void setTotal(int total) {
-		this.end = (int) (Math.ceil(this.page / 10.0)) * 10;
+		this.end = (int) (Math.ceil(this.page / this.per)) * 10;
 		this.start = this.end - 9;
 
 		if (this.end * display > total) {
@@ -59,7 +55,7 @@ public class PageParam {
 	public PageParam() {
 		this.page = 1;
 		this.display = 10;
-		
+		this.per=10.0;
 	}
 
 }

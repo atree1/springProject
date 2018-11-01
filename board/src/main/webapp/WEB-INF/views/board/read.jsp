@@ -1,14 +1,30 @@
-<%@ page language="java" contentType="text/html; charset=UTF-8"
-	pageEncoding="UTF-8"%>
+<%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@include file="../includes/header.jsp"%>
 
 <style>
-.uploadResult {
-  width:100%;
-  background-color: gray;
+#card{
+width:100%;
 }
+small{
+float:right}
+#addReplyBtn{
+float:right;
+}
+@media (min-width: 768px){
+.col-md-6 {
+     flex: 0 0 100%; 
+    max-width: 100%; 
+}
+}
+
+.uploadResult {
+	width: 100%;
+	background-color: gray;
+	overflow:auto;
+}
+
 .uploadResult ul{
   display:flex;
   flex-flow: row;
@@ -45,6 +61,10 @@
   justify-content: center;
   align-items: center;
 }
+ .addReplyBtn{
+	justify-content: flex-end;
+	align-items: flex-end;
+}
 </style>
 <div class="bigPictureWrapper">
 	<div class='bigPicture'>
@@ -52,7 +72,7 @@
 	
 	</div>
 </div>
-<div class="col-md-6 grid-margin stretch-card">
+<div id='card' class="col-md-6 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
 			<h4 class="card-title">Basic form</h4>
@@ -93,13 +113,28 @@
 				<ul>
 				</ul>
 			</div>
-			
+		
 			
 			<form id='actionForm' action='/board/list'>
 				<input type='hidden' name='page' value='${pageObj.page}'>
+				<input type='hidden' name='display' value='${pageObj.display}'>
 				<button id='modify'class="btn btn-success mr-2">수정/삭제</button>
 				<button class="btn btn-danger">목록</button>
 			</form>		
+		</div>
+		<div class='row'>
+		<div class='col-lg-12'>
+			<div class="panel panel-default">
+			<div class="panel-heading">
+				<i class="fa fa-superpowers"></i>Reply
+				<button id='addReplyBtn' class='btn-primary' >New Reply</button>
+			</div>
+			<div class="panel-body">
+				<ul class="chat">
+				
+				</ul>
+			</div>
+		</div>
 		</div>
 	</div>
 	<!-- Modal -->
@@ -121,6 +156,46 @@
 		<!-- /.modal-dialog -->
 	</div>
 	<!-- /.modal -->
+	<!-- Modal -->
+	<div class="modal fade" id="replyModal" tabindex="-1" role="dialog"
+		aria-labelledby="myModalLabel" aria-hidden="true">
+		<div class="modal-dialog">
+			<div class="modal-content">
+				<div class="modal-header">
+					<button type="button" class="close" data-dismiss="modal"
+						aria-hidden="true">&times;</button>
+					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
+				</div>
+				<div class="modal-body">
+					<div class="form-group">
+					<label>Reply</label>
+					<input class="form-control" name='reply' value='New Reply!!'>
+					</div>
+					<div class="form-group">
+					<label>Replyer</label>
+					<input class="form-control" name='replyer' value='New Reply!!'>
+					</div>
+					
+						<div class="form-group">
+					<label>Reply Date</label>
+					<input class="form-control" name='replydate'>
+					</div>
+						
+					
+				
+				</div>
+				<div class="modal-footer">
+				<button id='modalModBtn' type="button" class= "btn btn-warning">수정</button>
+				<button id='modalDelBtn' type="button" class= "btn btn-danger">삭제</button>
+				<button id='modalRegBtn' type="button" class= "btn btn-primary">등록</button>
+				<button id='modalCloseBtn' type="button" class= "btn btn-default">닫기</button>
+				</div>
+			</div>
+			<!-- /.modal-content -->
+		</div>
+		<!-- /.modal-dialog -->
+	</div>
+	<!-- /.modal -->
 	
 </div>
 
@@ -129,8 +204,7 @@
 <!-- partial:../../partials/_footer.html -->
 
 <%@include file="../includes/footer.jsp"%>
-
-
+<script type="text/javascript" src="/resources/js/reply.js"></script>
 
 <script>
 	$(document).ready(function() {
@@ -211,5 +285,99 @@ function checkModal(result) {
 	}
 }
 	
+	var bnoValue='<c:out value="${board.bno}"/>';
+	var replyUL=$('.chat');
+		showList(1);
+		
+		function showList(page){
+			replyService.getList({bno:bnoValue ,page:page||1},function(list){
+				var str="";
+				if(list==null||list.length==0)
+				{
+					replyUL.html("");
+					return ;
+				}
+				console.log(str);
+				for(var i=0,len=list.length||0;i<len;i++){
+					str+="<li class='left clearfix' data-rno='"+list[i].rno+"'>";
+					str+=" <div><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>";
+					str+="<small class='pull-right text-muted'>"+replyService.displayTime(list[i].replydate)+"</small></div>";
+					str+="<p>"+list[i].reply+"</p></div></li>";
+				}
+				
+				
+				replyUL.html(str);
+			})
+		}
+		
+		var modal=$("#replyModal");
+		var modalInputReply=modal.find("input[name='reply']");
+		var modalInputReplyer=modal.find("input[name='replyer']");
+		var modalInputReplyDate=modal.find("input[name='replydate']");
+		
+		var modalModBtn=$("#modalModBtn");
+		var modalDelBtn=$("#modalDelBtn");
+		var modalRegBtn=$("#modalRegBtn");
+		var modalCloseBtn=$("#modalCloseBtn");
+		$("#addReplyBtn").on("click",function(e){
+			modal.find("input").val("");
+			modalInputReplyDate.closest('div').hide();
+			modal.find("button[id!='modalCloseBtn']").hide();
+			
+		   modalRegBtn.show();
+		modal.modal('show');
+		
+		});
+		
+		modalRegBtn.on("click",function(e){
+			var reply={
+					reply:modalInputReply.val(),
+					replyer:modalInputReplyer.val(),
+					bno:bnoValue
+			};
+			replyService.add(reply,function(result){
+				alert(result)
+				
+				modal.find("input").val("");
+				modal.modal("hide");
+				showList(1);
+			});
+			});
+		 $(".chat").on("click" ,"li",function(e){
+			 var rno=$(this).data("rno");
+			 replyService.get(rno,function(reply){
+				 modalInputReply.val(reply.reply);
+				 modalInputReplyer.val(reply.replyer);
+				 modalInputReplyDate.val(replyService.displayTime(reply.replydate)).attr("readonly","readonly");
+				 modal.data("rno",reply.rno);
+				 
+				 modal.find("button[id !='modalCloseBtn']").hide();
+				 modalModBtn.show();
+				 modalDelBtn.show();
+				 
+				 modal.modal("show");
+			 
+			 
+			 })
+		 });
+		modalModBtn.on("click",function(e){
+			var reply={rno:modal.data("rno"),reply:modalInputReply.val()};
+			replyService.update(reply,function(result){
+				alert(result);
+				modal.modal("hide");
+				showList(1);
+			})
+		});
+		modalDelBtn.on("click",function(e){
+			var reply={rno:modal.data("rno"),reply:modalInputReply.val()};
+			replyService.remove(reply,function(result){
+				alert(result);
+				modal.modal("hide");
+				showList(1);
+			})
+		})
+		modalCloseBtn.on("click",function(e){
+			modal.modal("hide");
+		})
 	});
 </script>
