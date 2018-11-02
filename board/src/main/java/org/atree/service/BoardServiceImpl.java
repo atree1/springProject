@@ -90,5 +90,11 @@ public class BoardServiceImpl implements BoardService{
 		return attachMapper.findByBno(bno);
 	}
 
+	@Override
+	public int upViewCnt(BoardVO vo) {
+		// TODO Auto-generated method stub
+		return mapper.upViewCnt(vo);
+	}
+
 	
 }

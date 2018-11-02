@@ -36,7 +36,7 @@
 		class="org.atree.interceptor.CheckLoginInterceptor"></beans:bean>
 	<interceptors>
 		<interceptor>
-			<mapping path="" />
+			<mapping path="/board/*" />
 			<beans:ref bean="checkInter" />
 		</interceptor>
 	</interceptors>

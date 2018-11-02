@@ -24,11 +24,12 @@ public class replyMapperTests {
 		ReplyVO vo=new ReplyVO();
 		vo.setReply("hi");
 		vo.setReplyer("atree");
-		vo.setBno(458978);
+		vo.setBno(463070);
 		PageParam pageParam=new PageParam();
 		pageParam.setBno(458978);
 		pageParam.setPage(1);
 		log.info(mapper.getList(pageParam));
 	
+		log.info(mapper.depthGetList(pageParam));
 	}
 }

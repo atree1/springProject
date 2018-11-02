@@ -30,9 +30,12 @@ public class AfterLoginInterceptor extends HandlerInterceptorAdapter{
 		UserVO userVO=(UserVO)result;
 		
 		Cookie loginCookie=new Cookie("lcookie",URLEncoder.encode(userVO.getUserid(), "UTF-8"));
+		
 		log.info(loginCookie);
 		loginCookie.setMaxAge(60*1);
+		loginCookie.setPath("/"); 
 		response.addCookie(loginCookie);
+		
 		log.info(userVO);
 		
 		

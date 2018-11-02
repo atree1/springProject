@@ -21,7 +21,8 @@
 
 		select *
 		from tbl_reply
-		where  deleted='N'
+		where  bno=#{bno} and deleted='N'
+				
 		order
 		by
 		rno asc 
@@ -50,14 +51,15 @@
 	
 	<insert id="depthInsert">
 			insert into
-		tbl_reply(bno,reply,replyer,parent,seq)
+		tbl_reply(bno,reply,replyer,parent,seq,depth)
 		
-		values(#{bno},#{reply},#{replyer},#{parent},#{seq})
+		values(#{bno},#{reply},#{replyer},#{parent},#{seq},#{depth})
 		
 	</insert>
-	<select id="depthGetList">
+	<select id="depthGetList" resultType="org.atree.domain.ReplyVO">
 		select * from tbl_reply
-		order by parent asc seq desc
+		where  bno=#{bno} and deleted='N'
+		order by parent asc ,seq asc
 	</select>
 </mapper>
 

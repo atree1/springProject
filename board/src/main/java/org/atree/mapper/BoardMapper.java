@@ -17,4 +17,5 @@ public interface BoardMapper {
 	public int maxBno();
 	public void updateReplyCnt(@Param("bno") int bno,@Param("amount") int amount);
 	public int insertSelectKey(BoardVO vo);
+	public int upViewCnt(BoardVO vo);
 }

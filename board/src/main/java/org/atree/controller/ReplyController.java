@@ -43,6 +43,7 @@ public class ReplyController {
 		pageParam.setBno(bno);
 		pageParam.setPage(page);
 		log.info(service.getList(pageParam));
+		
 		return new ResponseEntity<List<ReplyVO>>(service.getList(pageParam),HttpStatus.OK);
 	}
 	

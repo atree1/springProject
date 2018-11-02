@@ -16,9 +16,12 @@ float:right;
 .col-md-6 {
      flex: 0 0 100%; 
     max-width: 100%; 
+  
 }
 }
-
+.panel-body{
+	 border: 1px solid black;
+}
 .uploadResult {
 	width: 100%;
 	background-color: gray;
@@ -188,6 +191,7 @@ float:right;
 				<button id='modalModBtn' type="button" class= "btn btn-warning">수정</button>
 				<button id='modalDelBtn' type="button" class= "btn btn-danger">삭제</button>
 				<button id='modalRegBtn' type="button" class= "btn btn-primary">등록</button>
+				<button id='modalRegBtn2' type="button" class= "btn btn-primary">답글</button>
 				<button id='modalCloseBtn' type="button" class= "btn btn-default">닫기</button>
 				</div>
 			</div>
@@ -244,7 +248,7 @@ float:right;
 						
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
 						str += "<img src='/display?fileName="+fileCallPath+"'>";
-						str+="<a href='/download?fileName="+fileCallPath+"'>"+attach.fileName+"</a>"
+						str+="<a href='"+fileCallPath+"'>"+attach.fileName+"</a>"
 						str += "</div>";
 						str +"</li>";
 					}else{
@@ -260,6 +264,14 @@ float:right;
 				$(".uploadResult ul").html(str);
 			});
 		})();
+		$(".uploadResult ul").on("click",'a',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			
+			var link="/download/"+$(this).attr('href');
+			self.location=link;
+			
+		});
 		var actionForm=$('#actionForm');
 		$('#modify').on("click", function(e) {
 			e.preventDefault();
@@ -300,17 +312,25 @@ float:right;
 					return ;
 				}
 				console.log(str);
-				for(var i=0,len=list.length||0;i<len;i++){
-					str+="<li class='left clearfix' data-rno='"+list[i].rno+"'>";
+				for(var i=0,len=list.length||0;i<len;i++){			
+						
+						str+="<li class='left clearfix' data-rno='"+list[i].rno+"'>";
+						if(list[i].depth==1){
+							str+=" <div style='margin-left:30px'><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>";
+						}else{
 					str+=" <div><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>";
-					str+="<small class='pull-right text-muted'>"+replyService.displayTime(list[i].replydate)+"</small></div>";
+						}
+						str+="<small class='pull-right text-muted'>"+replyService.displayTime(list[i].replydate)+"</small></div>";
 					str+="<p>"+list[i].reply+"</p>";
-					
-					str+="<button id='addDoubleReplyBtn' data-seq='"+list[i].seq+"' data-rno='"+list[i].rno+"'>답글</button></div></li>"
+					str+="<button class='btn btn-outline-info' id='addDoubleReplyBtn' data-parent='"+list[i].parent+"' data-rno='"+list[i].rno+"'>답글</button></div></li>"
+				
+				
 				}
-				
-				
+				seq=list[list.length-1].seq;
+				parent=list[list.length-1].parent;
 				replyUL.html(str);
+				
+				
 			})
 		}
 		
@@ -322,10 +342,10 @@ float:right;
 		var modalModBtn=$("#modalModBtn");
 		var modalDelBtn=$("#modalDelBtn");
 		var modalRegBtn=$("#modalRegBtn");
+		var modalRegBtn2=$("#modalRegBtn2");
 		var modalCloseBtn=$("#modalCloseBtn");
 		
-		var seq;
-		var parent;
+
 		$("#addReplyBtn").on("click",function(e){
 			modal.find("input").val("");
 			modalInputReplyDate.closest('div').hide();
@@ -341,8 +361,9 @@ float:right;
 					reply:modalInputReply.val(),
 					replyer:modalInputReplyer.val(),
 					bno:bnoValue,
-					parent:bnoValue,
-					seq:1
+					parent:++parent,
+					seq:++seq,
+					depth:0
 			};
 			replyService.add(reply,function(result){
 				alert(result)
@@ -388,23 +409,42 @@ float:right;
 		modalCloseBtn.on("click",function(e){
 			modal.modal("hide");
 		})
+		var seq=0;
+		var parent=0;
 		$(".chat").on('click','li button',function(e){
 			e.preventDefault();
 			e.stopPropagation();
 			var btn=e.target;
-			var seq=btn.getAttribute("data-seq");
-			var rno=btn.getAttribute("data-rno");
 			console.log(seq);
-			console.log(rno);
+			parent=btn.getAttribute("data-parent");
 			modal.find("input").val("");
 			modalInputReplyDate.closest('div').hide();
 			modal.find("button[id!='modalCloseBtn']").hide();
-			
-		   modalRegBtn.show();
+		
+		   modalRegBtn2.show();
 			modal.modal('show');
 			
 			
 			
 		});
+		
+		modalRegBtn2.on("click",function(e){
+			var reply={
+					reply:modalInputReply.val(),
+					replyer:modalInputReplyer.val(),
+					bno:bnoValue,
+					parent:parent,
+					seq:++seq,
+					depth:1
+					
+			};
+			replyService.add(reply,function(result){
+				alert(result)
+				
+				modal.find("input").val("");
+				modal.modal("hide");
+				showList(1);
+			});
+			});
 	});
 </script>

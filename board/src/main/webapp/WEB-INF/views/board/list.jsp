@@ -31,6 +31,7 @@
 							<th>WRITER</th>
 							<th>REGDATE</th>
 							<th>UPDATEDATE</th>
+							<th>VIEWCNT</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -45,6 +46,7 @@
 											value="${board.regdate}" /></td>
 									<td><fmt:formatDate pattern="yyyy-MM-dd hh:mm:ss"
 											value="${board.updatedate}" /></td>
+											<td><c:out value="${board.viewCnt}" /></td>
 								</tr>
 							</c:forEach>
 						</tr>
@@ -116,6 +118,8 @@
 
 </style>
 <%@include file="../includes/footer.jsp"%>
+<script type="text/javascript" src="/resources/js/jquery.cookie.js"></script>
+
 <script>
 $(document).ready(function(){
 	
@@ -154,6 +158,7 @@ $(document).ready(function(){
 	$('.board').on("click",function(e){
 		e.preventDefault();
 		var bno= $(this).attr('href');
+		$.cookie('viewcookie',bno,{expire: '1',path: '/'});
 		actionForm
 		.append("<input type='hidden' name='bno' value='"+bno+"'>");
 		actionForm.attr("action",

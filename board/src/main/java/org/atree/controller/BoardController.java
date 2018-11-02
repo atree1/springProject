@@ -7,6 +7,8 @@ import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.List;
 
+import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
 import org.atree.domain.BoardAttachDTO;
@@ -19,11 +21,11 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
+import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -67,13 +69,25 @@ public class BoardController {
 		
 		return "redirect:/board/list";
 	}
-	@GetMapping({"/read","/modify"})
-	public void read(@ModelAttribute("pageObj")PageParam pageParam,Model model) {
+	@GetMapping("/read")
+	public void read(@CookieValue(value = "viewcookie" ,required=false) String viewcookie,@ModelAttribute("pageObj")PageParam pageParam,Model model) {
+		
+			log.info("viewcookie :"+viewcookie);
+	//		response.addCookie(new Cookie("viewcookie", "view"));
+		
 		log.info("read page..........");
 		log.info(pageParam);
 		model.addAttribute("board",service.read(pageParam));
+		
 	}
-	
+	@GetMapping("/modify")
+	public void modify(@ModelAttribute("pageObj")PageParam pageParam,Model model) {
+		
+		log.info("modify page..........");
+		log.info(pageParam);
+		model.addAttribute("board",service.read(pageParam));
+		
+	}
 	@PostMapping("/modify")
 	public String modify(@ModelAttribute("pageObj")PageParam pageParam,@ModelAttribute("board")BoardVO boardVO,RedirectAttributes rttr) {
 		int result=service.modify(boardVO);

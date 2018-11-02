@@ -15,5 +15,5 @@ public interface ReplyService {
 	public int remove(ReplyVO vo);
 	public int getTotal(PageParam pageParam);
 	public List<ReplyVO> getList(PageParam pageParam);
-	
+
 }

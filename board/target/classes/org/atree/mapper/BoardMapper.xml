@@ -37,7 +37,12 @@
 		tbl_board(title,content,writer)
 		values(#{title},#{content},#{writer})
 	</insert>
-
+	<update id="upViewCnt">
+		update tbl_board
+		set viewcnt=#{viewCnt}+1
+		 where
+		bno=#{bno}
+	</update>
 	<select id="getList" resultType="org.atree.domain.BoardVO">
 
 		select *

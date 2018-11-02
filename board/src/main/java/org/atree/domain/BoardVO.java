@@ -17,6 +17,7 @@ public class BoardVO {
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date regdate,updatedate;
 	private char deleted;
-	private int replyCnt;
+	private int replyCnt,viewCnt;
 	private List<BoardAttachDTO> attachList;
+	
 }

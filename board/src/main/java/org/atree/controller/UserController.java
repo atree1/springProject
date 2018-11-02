@@ -32,7 +32,7 @@ public class UserController {
 		
 		log.info(user);
 		
-		return user!=null?"redirect:/board/list":"redirect:/user/login";
+		return "redirect:/board/list";
 	}
 	@GetMapping("/register")
 	public void register() {

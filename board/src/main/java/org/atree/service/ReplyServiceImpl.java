@@ -13,7 +13,6 @@ import org.springframework.transaction.annotation.Transactional;
 import lombok.Setter;
 
 @Service
-
 public class ReplyServiceImpl implements ReplyService {
 
 	@Setter(onMethod_=@Autowired)
@@ -26,7 +25,8 @@ public class ReplyServiceImpl implements ReplyService {
 	public int register(ReplyVO vo) {
 		// TODO Auto-generated method stub
 		boardMapper.updateReplyCnt(vo.getBno(),1);
-		return mapper.create(vo);
+		//return mapper.create(vo);
+		return mapper.depthInsert(vo);
 	}
 
 	@Override
@@ -58,7 +58,11 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	public List<ReplyVO> getList(PageParam pageParam) {
 		// TODO Auto-generated method stub
-		return mapper.getList(pageParam);
+//		return mapper.getList(pageParam);
+		return mapper.depthGetList(pageParam);
+
 	}
+
+	
 
 }

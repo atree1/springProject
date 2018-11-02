@@ -15,4 +15,5 @@ public interface BoardService {
 	public int getTotal(PageParam pageParam);
 	public List<BoardVO> getList(PageParam pageParam);
 	public List<BoardAttachDTO> getAttachList(int bno);
+	public int upViewCnt(BoardVO vo);
 }

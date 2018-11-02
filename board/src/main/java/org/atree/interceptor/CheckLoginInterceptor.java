@@ -18,7 +18,7 @@ public class CheckLoginInterceptor extends HandlerInterceptorAdapter{
 		log.info("cookie checker................................................");
 		boolean check=false;
 		if(cks==null||cks.length==0) {
-		
+			response.sendRedirect("/user/login");
 			return false;
 		}
 		
@@ -30,7 +30,7 @@ public class CheckLoginInterceptor extends HandlerInterceptorAdapter{
 		}
 		log.info("Login check result: "+check);
 		if(check==false) {
-			response.sendRedirect("/");
+			response.sendRedirect("/user/login");
 			return false;
 		}
 		return super.preHandle(request, response, handler);
