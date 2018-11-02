@@ -7,21 +7,26 @@
 #card{
 width:100%;
 }
+li{
+ list-style:none;
+ 
+}
+.page-item{
+	display: inline-flex;
+}
 small{
 float:right}
 #addReplyBtn{
 float:right;
 }
+
 @media (min-width: 768px){
 .col-md-6 {
      flex: 0 0 100%; 
     max-width: 100%; 
   
 }
-}
-.panel-body{
-	 border: 1px solid black;
-}
+
 .uploadResult {
 	width: 100%;
 	background-color: gray;
@@ -136,8 +141,13 @@ float:right;
 				<ul class="chat">
 				
 				</ul>
+			
 			</div>
-		</div>
+			<div class="panel-footer">
+			
+			</div>
+	</div>
+	</div>
 		</div>
 	</div>
 	<!-- Modal -->
@@ -255,7 +265,8 @@ float:right;
 						  
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
 						str += "<span> "+ attach.fileName+"</span><br/>";
-						str += "<img src='/resources/img/attach.png'></a>";
+						str += "<img src='/resources/images/favicon.png'></a>";
+						str+="<a href='"+fileCallPath+"'>"+attach.fileName+"</a>"
 						str += "</div>";
 						str +"</li>";
 					}
@@ -267,8 +278,7 @@ float:right;
 		$(".uploadResult ul").on("click",'a',function(e){
 			e.preventDefault();
 			e.stopPropagation();
-			
-			var link="/download/"+$(this).attr('href');
+			var link="/download/"+$(this).attr("href");
 			self.location=link;
 			
 		});
@@ -302,16 +312,77 @@ float:right;
 	var bnoValue='<c:out value="${board.bno}"/>';
 	var replyUL=$('.chat');
 		showList(1);
+	var pageNum=1;
+	var replyPageFooter=$(".panel-footer");
+	
+	
+		replyPageFooter.on("click","li a",function(e){
+			e.preventDefault();
+			
+			var targetPageNum=$(this).attr("href");
+			pageNum=targetPageNum;
+			
+			showList(pageNum);
+		});
+	
+	
+	
+	
+	
+		function showReplyPage(replyCnt){
+			var endNum= Math.ceil(pageNum/10.0)*10;
+			var startNum=endNum-9;
+			
+			var prev=startNum!=1;
+			var next=false;
+			
+			if(endNum*10>=replyCnt){
+				endNum=Math.ceil(replyCnt/10.0);
+			}
+			if(endNum*10 <replyCnt){
+				next=true;
+				
+			}
+			var str="<span><ul class='pagenation pull-right'>";
+			if(prev){
+				str+="<li class='page-item'><a class='page-link' href='"+(startNum-1)+"'>Previous</a></li>";
+			}
+			
+			for(var i=startNum;i<=endNum;i++){
+				var active=pageNum==i?"active":"";
+				
+				str+="<li class='page-item "+active+" '><a class='page-link' href='"+i+"'>"+i+"</a></li>";
+			}
+			
+			if(next){
+				str+="<li class='page-item'><a class='page-link' href='"+(endNum+1)+"'>Next</a></li>";
+			}
+			str+="</ul></span></div>";
+			replyPageFooter.html(str);
+			
+		}
 		
+	
 		function showList(page){
-			replyService.getList({bno:bnoValue ,page:page||1},function(list){
+			replyService.getList({bno:bnoValue ,page:page||1},
+			function(replyCnt,list){
+				
+				console.log("str");
+				
+				if(page==-1){
+					pageNum=Math.ceil(replyCnt/10.0);
+					showList(pageNum);
+					return;
+				}
+				
 				var str="";
+				
 				if(list==null||list.length==0)
 				{
 					replyUL.html("");
 					return ;
 				}
-				console.log(str);
+				console.log("list: "+list);
 				for(var i=0,len=list.length||0;i<len;i++){			
 						
 						str+="<li class='left clearfix' data-rno='"+list[i].rno+"'>";
@@ -326,12 +397,13 @@ float:right;
 				
 				
 				}
+				
 				seq=list[list.length-1].seq;
 				parent=list[list.length-1].parent;
 				replyUL.html(str);
-				
-				
-			})
+				console.log(str);
+				showReplyPage(replyCnt);
+			});
 		}
 		
 		var modal=$("#replyModal");
@@ -370,7 +442,7 @@ float:right;
 				
 				modal.find("input").val("");
 				modal.modal("hide");
-				showList(1);
+				showList(-1);
 			});
 			});
 		 $(".chat").on("click" ,"li",function(e){
@@ -443,8 +515,9 @@ float:right;
 				
 				modal.find("input").val("");
 				modal.modal("hide");
-				showList(1);
+				showList(-1);
 			});
-			});
+			
+		});
 	});
 </script>

@@ -24,9 +24,11 @@ var replyService = (function() {
 	function getList(param,callback,error){
 		var bno=param.bno;
 		var page=param.page||1;
-		$.getJSON("/replies/pages/"+bno+"/"+page+".json",function(data){
+		$.getJSON("/replies/pages/"+bno+"/"+page+".json",
+				function(data){
 			if(callback){
-				callback(data);
+				callback(data.replyCnt,data.list);
+				console.log(data.replyCnt,data.list);
 			}
 		}).fail(function(xhr,status,err){
 			if(error){

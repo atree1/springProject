@@ -3,6 +3,7 @@ package org.atree.service;
 import java.util.List;
 
 import org.atree.domain.PageParam;
+import org.atree.domain.ReplyPageDTO;
 import org.atree.domain.ReplyVO;
 import org.atree.mapper.BoardMapper;
 import org.atree.mapper.ReplyMapper;
@@ -63,6 +64,12 @@ public class ReplyServiceImpl implements ReplyService {
 
 	}
 
+	@Override
+	public ReplyPageDTO getListPage(PageParam pageParam) {
+		// TODO Auto-generated method stub
+		return new ReplyPageDTO(mapper.count(pageParam),mapper.depthGetList(pageParam));
+	}
+	
 	
 
 }

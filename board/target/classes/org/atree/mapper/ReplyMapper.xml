@@ -32,7 +32,8 @@
 
 		select count(*)
 		from tbl_reply
-		where rno>0
+		where rno>0 and bno=#{bno} and deleted='N'
+		
 	</select>
 
 	<update id="update">
@@ -59,7 +60,8 @@
 	<select id="depthGetList" resultType="org.atree.domain.ReplyVO">
 		select * from tbl_reply
 		where  bno=#{bno} and deleted='N'
-		order by parent asc ,seq asc
+		order by parent asc ,seq asc limit #{skip},#{display}
 	</select>
+	
 </mapper>
 

@@ -1,13 +1,13 @@
 package org.atree.controller;
 
-import java.util.List;
-
 import org.atree.domain.PageParam;
+import org.atree.domain.ReplyPageDTO;
 import org.atree.domain.ReplyVO;
 import org.atree.service.ReplyService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
+import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -38,13 +38,14 @@ public class ReplyController {
 	}
 	
 	@GetMapping(value="/pages/{bno}/{page}",produces={MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_UTF8_VALUE})
-	public ResponseEntity<List<ReplyVO>> getList(@PathVariable("page")int page,@PathVariable("bno")int bno){
+	public ResponseEntity<ReplyPageDTO> getList(@PathVariable("page")int page,@PathVariable("bno")int bno,Model model){
 		PageParam pageParam=new PageParam();
 		pageParam.setBno(bno);
 		pageParam.setPage(page);
+		pageParam.setTotal(service.getTotal(pageParam));
 		log.info(service.getList(pageParam));
-		
-		return new ResponseEntity<List<ReplyVO>>(service.getList(pageParam),HttpStatus.OK);
+
+		return new ResponseEntity<>(service.getListPage(pageParam),HttpStatus.OK);
 	}
 	
 	@GetMapping(value="/{rno}",produces={MediaType.APPLICATION_XML_VALUE,MediaType.APPLICATION_JSON_UTF8_VALUE})

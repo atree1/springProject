@@ -16,25 +16,25 @@ import lombok.extern.log4j.Log4j;
 
 @Service
 @Log4j
-public class BoardServiceImpl implements BoardService{
+public class BoardServiceImpl implements BoardService {
 
-	@Setter(onMethod_=@Autowired)
+	@Setter(onMethod_ = @Autowired)
 	private BoardMapper mapper;
-	
-	@Setter(onMethod_=@Autowired)
+
+	@Setter(onMethod_ = @Autowired)
 	private BoardAttachMapper attachMapper;
-	
+
 	@Transactional
 	@Override
 	public int register(BoardVO vo) {
 		// TODO Auto-generated method stub
-		//int result=mapper.create(vo);
-		int result=mapper.insertSelectKey(vo);
-		if(vo.getAttachList()==null||vo.getAttachList().size()<=0) {
+		// int result=mapper.create(vo);
+		int result = mapper.insertSelectKey(vo);
+		if (vo.getAttachList() == null || vo.getAttachList().size() <= 0) {
 			return result;
 		}
-		
-		for (BoardAttachDTO attach:vo.getAttachList()) {
+
+		for (BoardAttachDTO attach : vo.getAttachList()) {
 			attach.setBno(vo.getBno());
 			attachMapper.insert(attach);
 		}
@@ -50,20 +50,21 @@ public class BoardServiceImpl implements BoardService{
 	@Transactional
 	@Override
 	public int modify(BoardVO vo) {
-	
-	attachMapper.deleteAll(vo.getBno());
-	
-		if(vo.getAttachList()==null) {
+
+		attachMapper.deleteAll(vo.getBno());
+
+		if (vo.getAttachList() == null) {
 			return mapper.update(vo);
 		}
-				if(vo.getAttachList().size()>0) {
-			vo.getAttachList().forEach(attach->{
+		if (vo.getAttachList().size() > 0) {
+			vo.getAttachList().forEach(attach -> {
 				attach.setBno(vo.getBno());
 				attachMapper.insert(attach);
 			});
 		}
 		return mapper.update(vo);
 	}
+
 	@Transactional
 	@Override
 	public int remove(BoardVO vo) {
@@ -96,5 +97,4 @@ public class BoardServiceImpl implements BoardService{
 		return mapper.upViewCnt(vo);
 	}
 
-	
 }
