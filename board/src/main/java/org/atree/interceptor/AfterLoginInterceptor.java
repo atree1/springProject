@@ -16,7 +16,32 @@ import lombok.extern.log4j.Log4j;
 
 @Log4j
 public class AfterLoginInterceptor extends HandlerInterceptorAdapter{
+	@Override
+	public boolean preHandle(HttpServletRequest request, HttpServletResponse response, Object handler)
+			throws Exception {
+		Cookie[] cks=request.getCookies();
+		log.info("cookie checker................................................");
+		boolean check=false; 
+		if(cks==null||cks.length==0) {
+			response.sendRedirect("/");
+			return false;
+		}
+		for (Cookie cookie : cks) {
+			if(cookie.getName().equals("lcookie")) {
+				check=true;
+				
+				break;
+			}
+		}
 
+		log.info("Login check result: "+check);
+		if(check==true) {
+		response.sendRedirect("/board/list");
+		return super.preHandle(request, response, handler);
+		}
+		
+		return true;
+	}
 	@Override
 	public void postHandle(HttpServletRequest request, HttpServletResponse response, Object handler,
 			ModelAndView modelAndView) throws Exception {
@@ -32,7 +57,7 @@ public class AfterLoginInterceptor extends HandlerInterceptorAdapter{
 		Cookie loginCookie=new Cookie("lcookie",URLEncoder.encode(userVO.getUserid(), "UTF-8"));
 		
 		log.info(loginCookie);
-		loginCookie.setMaxAge(60*1);
+		loginCookie.setMaxAge(60*60);
 		loginCookie.setPath("/"); 
 		response.addCookie(loginCookie);
 		

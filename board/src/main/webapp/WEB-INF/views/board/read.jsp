@@ -73,6 +73,7 @@ float:right;
 	justify-content: flex-end;
 	align-items: flex-end;
 }
+
 </style>
 <div class="bigPictureWrapper">
 	<div class='bigPicture'>
@@ -130,6 +131,8 @@ float:right;
 				<button class="btn btn-danger">목록</button>
 			</form>		
 		</div>
+		
+		
 		<div class='row'>
 		<div class='col-lg-12'>
 			<div class="panel panel-default">
@@ -222,16 +225,72 @@ float:right;
 
 <script>
 	$(document).ready(function() {
+		var actionForm=$('#actionForm');
+		var result = '<c:out value="${result}"/>';
+		var msg = $('#myModal');
+		var bnoValue='<c:out value="${board.bno}"/>';
+		var replyUL=$('.chat');
+			showList(1);
+		var pageNum=1;
+		var replyPageFooter=$(".panel-footer");
+		
+		var modal=$("#replyModal");
+		var modalInputReply=modal.find("input[name='reply']");
+		var modalInputReplyer=modal.find("input[name='replyer']");
+		var modalInputReplyDate=modal.find("input[name='replydate']");
+		
+		var modalModBtn=$("#modalModBtn");
+		var modalDelBtn=$("#modalDelBtn");
+		var modalRegBtn=$("#modalRegBtn");
+		var modalRegBtn2=$("#modalRegBtn2");
+		var modalCloseBtn=$("#modalCloseBtn");
+		
+		var seq=0;
+		var parent=0;
+		//모달창 출력
+		checkModal(result);
+		history.replaceState({}, null, null);
+		
+		function checkModal(result) {
+			if (result === '' || history.state) {
+			return;
+			}
+
+			if (result === 'SUCCESS') {
+				$(".modal-body").html("작업이 완료되었습니다.");
+				msg.modal("show");
+			}
+	
+		}
+	
+	
+	
+		//이미지 클릭시 원본이미지 보여주기 파일 다운로드
 		$('.uploadResult').on("click","li",function(e){
 			var liObj=$(this);
 			var path=encodeURIComponent(liObj.data("path")+"/"+liObj.data("uuid")+"_"+liObj.data("filename"));
 			
 			if(liObj.data("type")){
 				showImage(path.replace(new RegExp(/\\/g),"/"));
-			}else{
-				self.location="/download?fileName="+path;
 			}
 		});
+		
+		//이미지 다운로드
+		$(".uploadResult ul").on("click",'a',function(e){
+			e.preventDefault();
+			e.stopPropagation();
+			var liObj=$(this).closest("li");
+			var fileName=liObj.data("filename").replace(".","_");
+			var path=encodeURIComponent(liObj.data("path")+"/"+liObj.data("uuid")+"_"+fileName);
+			
+			console.log(path);
+			
+			var link="/download?fileName="+path;
+			self.location=link;
+			
+		});
+		
+		//원본 이미지 파일 출력
 		function showImage(fileCallPath){
 			
 			$(".bigPictureWrapper").css("display","flex").show();
@@ -239,12 +298,18 @@ float:right;
 			$(".bigPicture")
 			.html("<img src='/display?fileName="+fileCallPath+"'>").animate({width:'100%',height:'100%'},1000);
 		}
+		
+		
+		// 원본 이미지 파일 닫기
 		$(".bigPictureWrapper").on("click",function(e){
 			$(".bigPicture").animate({width:'0%',height:'0%'},1000);
 			setTimeout(function(){
 			$(".bigPictureWrapper").hide();}
 		,1000);
 		});
+		
+		
+		//이미지 출력 즉시실행함수
 		(function() {
 			var bno='<c:out value="${board.bno}"/>';
 			$.getJSON("/board/getAttachList",{bno:bno},function(arr){
@@ -258,15 +323,15 @@ float:right;
 						
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
 						str += "<img src='/display?fileName="+fileCallPath+"'>";
-						str+="<a href='"+fileCallPath+"'>"+attach.fileName+"</a>"
+						str+="<p><a href='"+fileCallPath+"'>"+attach.fileName+"</a></p>"
 						str += "</div>";
 						str +"</li>";
+						console.log("filePath: "+fileCallPath);
 					}else{
 						  
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-						str += "<span> "+ attach.fileName+"</span><br/>";
 						str += "<img src='/resources/images/favicon.png'></a>";
-						str+="<a href='"+fileCallPath+"'>"+attach.fileName+"</a>"
+						str+="<p><a href='#'>"+attach.fileName+"</a></p>"
 						str += "</div>";
 						str +"</li>";
 					}
@@ -275,14 +340,13 @@ float:right;
 				$(".uploadResult ul").html(str);
 			});
 		})();
-		$(".uploadResult ul").on("click",'a',function(e){
-			e.preventDefault();
-			e.stopPropagation();
-			var link="/download/"+$(this).attr("href");
-			self.location=link;
-			
-		});
-		var actionForm=$('#actionForm');
+		
+		
+		
+	
+		
+		
+		// 수정버튼 클릭
 		$('#modify').on("click", function(e) {
 			e.preventDefault();
 			console.log("등록~");
@@ -291,31 +355,9 @@ float:right;
 			.attr("action","/board/modify")
 			.submit();
 		})
-		var result = '<c:out value="${result}"/>';
-		var msg = $('#myModal');
+		
 
-		checkModal(result);
-		history.replaceState({}, null, null);
-
-		function checkModal(result) {
-			if (result === '' || history.state) {
-			return;
-			}
-
-			if (result === 'SUCCESS') {
-				$(".modal-body").html("작업이 완료되었습니다.");
-				msg.modal("show");
-			}
-	
-		}
-	
-	var bnoValue='<c:out value="${board.bno}"/>';
-	var replyUL=$('.chat');
-		showList(1);
-	var pageNum=1;
-	var replyPageFooter=$(".panel-footer");
-	
-	
+		//댓글 페이지 이동
 		replyPageFooter.on("click","li a",function(e){
 			e.preventDefault();
 			
@@ -328,7 +370,7 @@ float:right;
 	
 	
 	
-	
+		//댓글 페이지 10개 출력
 		function showReplyPage(replyCnt){
 			var endNum= Math.ceil(pageNum/10.0)*10;
 			var startNum=endNum-9;
@@ -362,7 +404,7 @@ float:right;
 			
 		}
 		
-	
+		//댓글 리스트 출력
 		function showList(page){
 			replyService.getList({bno:bnoValue ,page:page||1},
 			function(replyCnt,list){
@@ -371,6 +413,7 @@ float:right;
 				
 				if(page==-1){
 					pageNum=Math.ceil(replyCnt/10.0);
+					console.log("pageNum:"+pageNum);
 					showList(pageNum);
 					return;
 				}
@@ -406,18 +449,9 @@ float:right;
 			});
 		}
 		
-		var modal=$("#replyModal");
-		var modalInputReply=modal.find("input[name='reply']");
-		var modalInputReplyer=modal.find("input[name='replyer']");
-		var modalInputReplyDate=modal.find("input[name='replydate']");
 		
-		var modalModBtn=$("#modalModBtn");
-		var modalDelBtn=$("#modalDelBtn");
-		var modalRegBtn=$("#modalRegBtn");
-		var modalRegBtn2=$("#modalRegBtn2");
-		var modalCloseBtn=$("#modalCloseBtn");
 		
-
+		//댓글 추가 모달창   
 		$("#addReplyBtn").on("click",function(e){
 			modal.find("input").val("");
 			modalInputReplyDate.closest('div').hide();
@@ -428,6 +462,7 @@ float:right;
 		
 		});
 		
+		//댓글 등록
 		modalRegBtn.on("click",function(e){
 			var reply={
 					reply:modalInputReply.val(),
@@ -442,9 +477,11 @@ float:right;
 				
 				modal.find("input").val("");
 				modal.modal("hide");
-				showList(-1);
+				showList(1);
 			});
 			});
+		
+		//수정 모달창
 		 $(".chat").on("click" ,"li",function(e){
 			 var rno=$(this).data("rno");
 			 replyService.get(rno,function(reply){
@@ -462,6 +499,9 @@ float:right;
 			 
 			 })
 		 });
+		
+		
+		//댓글 수정
 		modalModBtn.on("click",function(e){
 			var reply={rno:modal.data("rno"),reply:modalInputReply.val()};
 			replyService.update(reply,function(result){
@@ -470,6 +510,8 @@ float:right;
 				showList(1);
 			})
 		});
+		
+		//댓글 삭제
 		modalDelBtn.on("click",function(e){
 			var reply={rno:modal.data("rno"),reply:modalInputReply.val()};
 			replyService.remove(reply,function(result){
@@ -478,11 +520,14 @@ float:right;
 				showList(1);
 			})
 		})
+		
+		//취소 버튼
 		modalCloseBtn.on("click",function(e){
 			modal.modal("hide");
 		})
-		var seq=0;
-		var parent=0;
+		
+		
+		//대댓글 추가 모달창
 		$(".chat").on('click','li button',function(e){
 			e.preventDefault();
 			e.stopPropagation();
@@ -500,6 +545,7 @@ float:right;
 			
 		});
 		
+		//대댓글 등록
 		modalRegBtn2.on("click",function(e){
 			var reply={
 					reply:modalInputReply.val(),
@@ -515,7 +561,7 @@ float:right;
 				
 				modal.find("input").val("");
 				modal.modal("hide");
-				showList(-1);
+				showList(1);
 			});
 			
 		});

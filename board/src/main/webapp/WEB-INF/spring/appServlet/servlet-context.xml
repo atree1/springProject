@@ -39,6 +39,7 @@
 			<mapping path="/board/*" />
 			<beans:ref bean="checkInter" />
 		</interceptor>
+
 	</interceptors>
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 

@@ -125,7 +125,11 @@ $(document).ready(function(){
 	
 	var actionForm = $('#actionForm');
 	var currentNum = ${pageObj.page};
+	var result = '<c:out value="${result}"/>';
+	var msg = $('#myModal');
 
+	
+	//목록 출력 개수 변환
 	$('#display').change(function(e){
 		var displayValue=$("select[name='display'] option:selected").val();
 		console.log(displayValue);
@@ -134,6 +138,7 @@ $(document).ready(function(){
 		actionForm.submit();
 	});
 	
+	//검색 
 	$('#searchBtn').on("click",function(e){
 		
 		
@@ -155,10 +160,12 @@ $(document).ready(function(){
 		actionForm.submit();
 		
 	})
+	
+	// 글 읽기 리드페이지 이동
 	$('.board').on("click",function(e){
 		e.preventDefault();
 		var bno= $(this).attr('href');
-		$.cookie('viewcookie',bno,{expire: '1',path: '/'});
+		
 		actionForm
 		.append("<input type='hidden' name='bno' value='"+bno+"'>");
 		actionForm.attr("action",
@@ -168,9 +175,10 @@ $(document).ready(function(){
 	$('.pagination li[data-page=' + currentNum + '] button')
 	.attr("style","background-color:lightgray;");
 
-$('.pagination li a').on(
-	'click',
-	function(e) {
+	//페이지 이동
+	$('.pagination li a').on(
+		'click',
+		function(e) {
 		e.preventDefault();
 		var target = $(this).attr('href');
 		$("#page").val(target);
@@ -178,22 +186,28 @@ $('.pagination li a').on(
 				.attr("method", 'get').submit();
 
 	});
-var result = '<c:out value="${result}"/>';
-var msg = $('#myModal');
 
-checkModal(result);
-history.replaceState({}, null, null);
+ 
+	checkModal(result);
 
-function checkModal(result) {
-	if (result === '' || history.state) {
+	history.replaceState({}, null, null);
+
+	//모달 창 출력
+	function checkModal(result) {
+
+		if (result === '' || history.state) {
 		return;
-	}
+	
+		}
 
-	if (result === 'SUCCESS') {
-		$(".modal-body").html("작업이 완료되었습니다.");
-		msg.modal("show");
+	
+		if (result === 'SUCCESS') {
+			$(".modal-body").html("작업이 완료되었습니다.");
+			msg.modal("show");
+		}
+
+	
 	}
-}
 })
 
 </script>

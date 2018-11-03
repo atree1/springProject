@@ -137,6 +137,11 @@ width:100%;
 
 <script>
 	$(document).ready(function() {
+		var regex=new RegExp("(.*?)\.(exe|sh|zip|alz)$");
+		var maxSize=5242880;
+		
+		
+		//이미지 리스트 출력
 		(function() {
 			var bno='<c:out value="${board.bno}"/>';
 			$.getJSON("/board/getAttachList",{bno:bno},function(arr){
@@ -169,6 +174,9 @@ width:100%;
 				$(".uploadResult ul").html(str);
 			});
 		})();
+		
+		
+		//수정버튼 클릭시
 		var actionForm=$('#actionForm');
 		$('#modifyBtn').on("click", function(e) {
 			e.preventDefault();
@@ -185,10 +193,14 @@ width:100%;
 			
 			$("#modifyForm").append(str).submit();
 		});
+		
+		//삭제버튼
 		$('#removeBtn').on("click", function(e) {
 			e.preventDefault();
 			$("#actionForm").attr("method",'post').attr("action","/board/remove").submit();
 		});
+		
+		//이미지 삭제
 		$(".uploadResult").on("click","button",function(e){
 			if(confirm("remove this file?")){
 				var targetLi=$(this).closest("li");
@@ -196,8 +208,8 @@ width:100%;
 			}
 			
 		});
-		var regex=new RegExp("(.*?)\.(exe|sh|zip|alz)$");
-		var maxSize=5242880;
+		
+		//파일 사이즈 ,확장자 체크
 		function checkExtension(fileName,fileSize){
 			if(fileSize>=maxSize){
 				alert("파일 사이즈 초과");
@@ -209,7 +221,8 @@ width:100%;
 			}
 			return true;
 		}
-	
+		
+		//파일 업로드
 		$('#files').change(function(e){
 			var formData=new FormData();
 		
@@ -237,6 +250,41 @@ width:100%;
 				}
 			});
 		});
+		
+		//업로드 출력
+		function showUploadResult(uploadResultArr) {
+			if(!uploadResultArr||uploadResultArr.length==0){
+				return;
+			}
+			var uploadUL=$(".uploadResult ul");
+			var str="";
+			$(uploadResultArr).each(function(i,obj){
+				
+				if(obj.fileType){
+					var fileCallPath =  encodeURIComponent( obj.uploadPath+ "/s_"+obj.uuid +"_"+obj.fileName);
+					str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"' ><div>";
+					str += "<span> "+ obj.fileName+"</span>";
+					str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='image' class='btn btn-icons btn-rounded btn-outline-warning'>x</button><br>";
+					str += "<img src='/display?fileName="+fileCallPath+"'>";
+					str += "</div>";
+					str +"</li>";
+				}else{
+					var fileCallPath =  encodeURIComponent( obj.uploadPath+"/"+ obj.uuid +"_"+obj.fileName);			      
+				    var fileLink = fileCallPath.replace(new RegExp(/\\/g),"/");
+				      
+					str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"' ><div>";
+					str += "<span> "+ obj.fileName+"</span>";
+					str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn-rounded btn-outline-warning'>x</button><br>";
+					str += "<img src='/resources/images/favicon.png'></a>";
+					str += "</div>";
+					str +"</li>";
+				}
+			});
+			uploadUL.append(str);
+			
+		}
+		
+		//업로드 출력
 		function showUploadResult(uploadResultArr) {
 			if(!uploadResultArr||uploadResultArr.length==0){
 				return;

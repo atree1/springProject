@@ -8,6 +8,7 @@ import java.nio.file.Paths;
 import java.util.List;
 
 import javax.servlet.http.Cookie;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.validation.Valid;
 
@@ -72,9 +73,23 @@ public class BoardController {
 	@GetMapping("/read")
 	public void read(@CookieValue(value = "viewcookie" ,required=false) String viewcookie,@ModelAttribute("pageObj")PageParam pageParam,Model model) {
 		
-			log.info("viewcookie :"+viewcookie);
-	//		response.addCookie(new Cookie("viewcookie", "view"));
-		
+//			log.info("viewcookie :"+viewcookie);
+//			BoardVO vo=service.read(pageParam);
+//			if(viewcookie==null) {
+//			response.addCookie(new Cookie("viewcookie",bno));
+//		
+//			  service.upViewCnt(vo);
+//			}
+//			else {
+//				if(viewcookie.contains(bno)) {
+//					
+//				}
+//				else {
+//					viewcookie+="/"+bno;
+//					service.upViewCnt(vo);
+//				}
+//			}
+			
 		log.info("read page..........");
 		log.info(pageParam);
 		model.addAttribute("board",service.read(pageParam));

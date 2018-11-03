@@ -5,6 +5,7 @@ import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.UnsupportedEncodingException;
 import java.net.URLDecoder;
+import java.net.URLEncoder;
 import java.nio.file.Files;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -20,8 +21,8 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.util.FileCopyUtils;
 import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.multipart.MultipartFile;
 
@@ -49,9 +50,9 @@ public class UploadController {
 		String str = sdf.format(date);
 		return str.replace("-", File.separator);
 	}
-	@GetMapping(value="/download/{fileName}",produces= {MediaType.APPLICATION_OCTET_STREAM_VALUE})
+	@GetMapping(value="/download",produces= {MediaType.APPLICATION_OCTET_STREAM_VALUE})
 	@ResponseBody
-	public ResponseEntity<byte[]> download(@PathVariable("fileName") String fileName){
+	public ResponseEntity<byte[]> download(@RequestHeader("User-Agent")String userAgent,String fileName){
 		
 		ResponseEntity<byte[]> result=null;
 		log.info(fileName);
@@ -60,14 +61,28 @@ public class UploadController {
 		String ext=fileName.substring(fileName.lastIndexOf("_")+1);
 		String total=fName+"."+ext;
 	
+		
 		int under=total.indexOf("_");
 		String totalOrigin=total.substring(under+1);
 		try {
 			File target=new File("C:\\upload\\"+total);
 			
 			HttpHeaders header=new HttpHeaders();
-			String downName= new String(totalOrigin.getBytes("UTF-8"),"ISO-8859-1");
-			header.add("Content-Disposition","attachment; filename="+downName);
+			String downloadName=null;
+			if(userAgent.contains("Trident")) {
+				log.info("IE browser");
+			downloadName=URLEncoder.encode(totalOrigin,"UTF-8").replaceAll("\\+"," ");
+			}else if(userAgent.contains("Edge")) {
+				log.info("edge browser");
+				downloadName=URLEncoder.encode(totalOrigin,"UTF-8");
+			}else {
+				log.info("edge browser");
+				downloadName=new String(totalOrigin.getBytes("UTF-8"),"ISO-8859-1");
+			}
+			log.info("downloadName:"+downloadName);
+			
+			
+			header.add("Content-Disposition","attachment; filename="+downloadName);
 			
 			byte[] arr= FileCopyUtils.copyToByteArray(target);
 			result=new ResponseEntity<>(arr,header,HttpStatus.OK);
@@ -82,7 +97,7 @@ public class UploadController {
 //	@ResponseBody
 //	public ResponseEntity<Resource>downloadFile(@RequestHeader("User-Agent")String userAgent,String fileName){
 //		Resource resource=new FileSystemResource("c:\\upload\\"+fileName);
-//		log.info("fileName"+fileName);
+//		log.info("fileName: "+fileName);
 //		log.info(resource);
 //		if(resource.exists()==false) {
 //			return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -118,7 +133,7 @@ public class UploadController {
 //		
 //		return new ResponseEntity<Resource>(resource,headers,HttpStatus.OK);
 //	}
-	
+//	
 	@PostMapping(value = "/upload", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<BoardAttachDTO>> upload(MultipartFile[] uploadFile) {
