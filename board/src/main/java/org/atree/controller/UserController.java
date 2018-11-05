@@ -23,17 +23,14 @@ public class UserController {
 	@GetMapping("/login")
 	public void login() {
 		log.info("login get~~~~");
+		
+		
 	}
-	@PostMapping("/login")
-	public String login(@ModelAttribute("user") UserVO user,Model model) {
-		log.info("login post~~~~~~");
+	@GetMapping("/logout")
+	public void logoutGet() {
+		log.info("custom logout");
+	}
 	
-		model.addAttribute("user",service.get(user));
-		
-		log.info(user);
-		
-		return "redirect:/board/list";
-	}
 	@GetMapping("/register")
 	public void register() {
 		log.info("register~~~~~~~");

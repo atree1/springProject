@@ -23,7 +23,7 @@
 	<!-- Handles HTTP GET requests for /resources/** by efficiently serving 
 		up static resources in the ${webappRoot}/resources directory -->
 	<resources mapping="/resources/**" location="/resources/" />
-	<beans:bean id="loginInter"
+	<!-- <beans:bean id="loginInter"
 		class="org.atree.interceptor.AfterLoginInterceptor"></beans:bean>
 	<interceptors>
 		<interceptor>
@@ -40,7 +40,7 @@
 			<beans:ref bean="checkInter" />
 		</interceptor>
 
-	</interceptors>
+	</interceptors> -->
 
 	<!-- Resolves views selected for rendering by @Controllers to .jsp resources 
 		in the /WEB-INF/views directory -->

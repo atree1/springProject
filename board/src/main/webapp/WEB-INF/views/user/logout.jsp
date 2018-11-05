@@ -27,29 +27,9 @@
         <div class="row w-100">
           <div class="col-lg-4 mx-auto">
             <div class="auto-form-wrapper">
-              <form id="loginForm" method="post" action="/login">
-                <div class="form-group">
-                  <label class="label">UserID</label>
-                  <div class="input-group">
-                    <input type="text" class="form-control" placeholder="UserID" name="username">
-                    <div class="input-group-append">
-                      <span class="input-group-text">
-                        <i class="mdi mdi-check-circle-outline"></i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
-                <div class="form-group">
-                  <label class="label">Password</label>
-                  <div class="input-group">
-                    <input type="password" class="form-control" placeholder="*********" name="password">
-                    <div class="input-group-append">
-                      <span class="input-group-text">
-                        <i class="mdi mdi-check-circle-outline"></i>
-                      </span>
-                    </div>
-                  </div>
-                </div>
+              <form id="logoutForm" method="post" action="/logout">
+    
+              
                 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> 
                 <div class="form-group">
                   <button class="btn btn-primary submit-btn btn-block">Login</button>

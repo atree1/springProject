@@ -1,7 +1,6 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@ page session="true" %>
 
-<meta http-equiv="refresh" content="0; url=http://localhost:8080/user/login">
 <html>
 
 <head>
