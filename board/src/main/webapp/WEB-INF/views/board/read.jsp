@@ -245,7 +245,7 @@ float:right;
 		var modalRegBtn2=$("#modalRegBtn2");
 		var modalCloseBtn=$("#modalCloseBtn");
 		
-		var seq=0;
+		
 		var parent=0;
 		//모달창 출력
 		checkModal(result);
@@ -441,7 +441,6 @@ float:right;
 				
 				}
 				
-				seq=list[list.length-1].seq;
 				parent=list[list.length-1].parent;
 				replyUL.html(str);
 				console.log(str);
@@ -469,7 +468,6 @@ float:right;
 					replyer:modalInputReplyer.val(),
 					bno:bnoValue,
 					parent:++parent,
-					seq:++seq,
 					depth:0
 			};
 			replyService.add(reply,function(result){
@@ -532,7 +530,7 @@ float:right;
 			e.preventDefault();
 			e.stopPropagation();
 			var btn=e.target;
-			console.log(seq);
+		
 			parent=btn.getAttribute("data-parent");
 			modal.find("input").val("");
 			modalInputReplyDate.closest('div').hide();
@@ -552,7 +550,6 @@ float:right;
 					replyer:modalInputReplyer.val(),
 					bno:bnoValue,
 					parent:parent,
-					seq:++seq,
 					depth:1
 					
 			};
