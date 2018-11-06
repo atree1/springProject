@@ -1,8 +1,9 @@
 <%@ page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@include file="../includes/header.jsp"%>
-
+<sec:authentication var="user" property="principal" />
 <style>
 #card{
 width:100%;
@@ -124,10 +125,14 @@ float:right;
 			</div>
 		
 			
+			
 			<form id='actionForm' action='/board/list'>
 				<input type='hidden' name='page' value='${pageObj.page}'>
+			
 				<input type='hidden' name='display' value='${pageObj.display}'>
+			<c:if test="${board.writer==user.username}">
 				<button id='modify'class="btn btn-success mr-2">수정/삭제</button>
+				</c:if>
 				<button class="btn btn-danger">목록</button>
 			</form>		
 		</div>
@@ -185,11 +190,11 @@ float:right;
 				<div class="modal-body">
 					<div class="form-group">
 					<label>Reply</label>
-					<input class="form-control" name='reply' value='New Reply!!'>
+					<input class="form-control" name='reply' value=''>
 					</div>
 					<div class="form-group">
 					<label>Replyer</label>
-					<input class="form-control" name='replyer' value='New Reply!!'>
+					<input type="text" class="form-control"  name='replyer' value='<c:out value="${user.username}" />' readonly="readonly">
 					</div>
 					
 						<div class="form-group">
@@ -443,7 +448,7 @@ float:right;
 				
 				parent=list[list.length-1].parent;
 				replyUL.html(str);
-				console.log(str);
+				
 				showReplyPage(replyCnt);
 			});
 		}
@@ -452,7 +457,7 @@ float:right;
 		
 		//댓글 추가 모달창   
 		$("#addReplyBtn").on("click",function(e){
-			modal.find("input").val("");
+			//modal.find("input").val();
 			modalInputReplyDate.closest('div').hide();
 			modal.find("button[id!='modalCloseBtn']").hide();
 			
@@ -532,7 +537,7 @@ float:right;
 			var btn=e.target;
 		
 			parent=btn.getAttribute("data-parent");
-			modal.find("input").val("");
+			
 			modalInputReplyDate.closest('div').hide();
 			modal.find("button[id!='modalCloseBtn']").hide();
 		

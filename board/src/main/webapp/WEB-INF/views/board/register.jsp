@@ -6,7 +6,7 @@
 <%@ taglib uri="http://www.springframework.org/tags" prefix="spring"%>
 
 <%@ taglib uri="http://www.springframework.org/tags/form" prefix="form"%>
-
+<%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@include file="../includes/header.jsp"%>
 <style>
 #card{
@@ -46,7 +46,7 @@ width:100%;
 
 
 </style>
-
+<sec:authentication var="user" property="principal" />
 <div id='card' class="col-md-12 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
@@ -54,7 +54,7 @@ width:100%;
 				<div class="form-group">
 					<label for="exampleInputEmail3">WRITER</label> <input type="text"
 						class="form-control" id="exampleInputEmail3"
-						placeholder="아이디를 입력하세요" name='writer'>
+						 name='writer' value='<c:out value="${user.username}"/>' readonly="readonly">
 				</div>
 				<div class="form-group">
 					<label for="exampleInputName1">TITLE</label> <input type="text"

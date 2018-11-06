@@ -36,8 +36,8 @@
 	<logger name="org.springframework.web">
 		<level value="info" />
 	</logger>
-	<logger name="org.springframework.security">
-		<level value="info" />
+	<logger name="org.atree.security">
+		<level value="debug" />
 	</logger>
 	<!-- Root Logger -->
 	<root>
