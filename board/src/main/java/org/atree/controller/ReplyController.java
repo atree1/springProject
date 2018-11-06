@@ -4,6 +4,7 @@ import org.atree.domain.PageParam;
 import org.atree.domain.ReplyPageDTO;
 import org.atree.domain.ReplyVO;
 import org.atree.service.ReplyService;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
@@ -17,14 +18,15 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RestController;
 
 import lombok.AllArgsConstructor;
+import lombok.Setter;
 import lombok.extern.log4j.Log4j;
 
 @RequestMapping("/replies")
 @RestController
 @Log4j
-@AllArgsConstructor
-public class ReplyController {
 
+public class ReplyController {
+	@Setter(onMethod_=@Autowired)
 	private ReplyService service;
 
 	@PostMapping(value = "/new", consumes = "application/json", produces = { MediaType.TEXT_PLAIN_VALUE })
