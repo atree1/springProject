@@ -448,7 +448,6 @@ float:right;
 				
 				parent=list[list.length-1].parent;
 				replyUL.html(str);
-				
 				showReplyPage(replyCnt);
 			});
 		}

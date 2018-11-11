@@ -58,8 +58,7 @@ public class ReplyController {
 	@RequestMapping(method= {RequestMethod.PUT,RequestMethod.PATCH},value="/{rno}",consumes="application/json",
 			produces= {MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> modify(@RequestBody ReplyVO vo,@PathVariable("rno") int rno){
-		PageParam pageParam=new PageParam();
-		pageParam.setRno(rno);
+
 		vo.setRno(rno);
 		int result=service.modify(vo);
 		return result==1?new ResponseEntity<String>("success",HttpStatus.OK):new ResponseEntity<String> (HttpStatus.INTERNAL_SERVER_ERROR);
@@ -68,8 +67,7 @@ public class ReplyController {
 	@RequestMapping(method= {RequestMethod.PUT,RequestMethod.PATCH},value="/delete/{rno}",consumes="application/json",
 			produces= {MediaType.TEXT_PLAIN_VALUE})
 	public ResponseEntity<String> delete(@RequestBody ReplyVO vo,@PathVariable("rno") int rno){
-		PageParam pageParam=new PageParam();
-		pageParam.setRno(rno);
+	
 		vo.setRno(rno);
 		int result=service.remove(vo);
 		return result==1?new ResponseEntity<String>("success",HttpStatus.OK):new ResponseEntity<String> (HttpStatus.INTERNAL_SERVER_ERROR);
