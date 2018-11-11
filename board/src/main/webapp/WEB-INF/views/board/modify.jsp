@@ -172,7 +172,7 @@ width:100%;
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
 						str += "<span> "+ attach.fileName+"</span>";
 						str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn-rounded btn-outline-warning'>x</button><br>";
-						str += "<img src='/resources/images/favicon.png'></a>";
+						str += "<img src='/resources/images/document.jpg'></a>";
 						str += "</div>";
 						str +"</li>";}
 					
@@ -282,7 +282,7 @@ width:100%;
 					str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"' ><div>";
 					str += "<span> "+ obj.fileName+"</span>";
 					str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn-rounded btn-outline-warning'>x</button><br>";
-					str += "<img src='/resources/images/favicon.png'></a>";
+					str += "<img src='/resources/images/document.jpg'></a>";
 					str += "</div>";
 					str +"</li>";
 				}
@@ -315,7 +315,7 @@ width:100%;
 					str += "<li data-path='"+obj.uploadPath+"' data-uuid='"+obj.uuid+"' data-filename='"+obj.fileName+"' data-type='"+obj.fileType+"' ><div>";
 					str += "<span> "+ obj.fileName+"</span>";
 					str += "<button type='button' data-file=\'"+fileCallPath+"\' data-type='file' class='btn-rounded btn-outline-warning'>x</button><br>";
-					str += "<img src='/resources/images/favicon.png'></a>";
+					str += "<img src='/resources/images/document.jpg'></a>";
 					str += "</div>";
 					str +"</li>";
 				}

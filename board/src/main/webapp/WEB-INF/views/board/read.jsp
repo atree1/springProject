@@ -335,7 +335,7 @@ float:right;
 					}else{
 						  
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
-						str += "<img src='/resources/images/favicon.png'></a>";
+						str += "<img src='/resources/images/document.jpg'></a>";
 						str+="<p><a href='#'>"+attach.fileName+"</a></p>"
 						str += "</div>";
 						str +"</li>";
