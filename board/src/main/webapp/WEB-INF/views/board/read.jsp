@@ -194,7 +194,7 @@ float:right;
 					</div>
 					<div class="form-group">
 					<label>Replyer</label>
-					<input type="text" class="form-control"  name='replyer' value='<c:out value="${user.username}" />' readonly="readonly">
+					<input type="text" class="form-control"  name='replyer' readonly="readonly">
 					</div>
 					
 						<div class="form-group">
@@ -238,12 +238,12 @@ float:right;
 			showList(1);
 		var pageNum=1;
 		var replyPageFooter=$(".panel-footer");
-		
+		var replyerName = '<c:out value="${user.username}"/>';
+		console.log(replyerName);
 		var modal=$("#replyModal");
 		var modalInputReply=modal.find("input[name='reply']");
 		var modalInputReplyer=modal.find("input[name='replyer']");
 		var modalInputReplyDate=modal.find("input[name='replydate']");
-		
 		var modalModBtn=$("#modalModBtn");
 		var modalDelBtn=$("#modalDelBtn");
 		var modalRegBtn=$("#modalRegBtn");
@@ -414,9 +414,8 @@ float:right;
 			replyService.getList({bno:bnoValue ,page:page||1},
 			function(replyCnt,list){
 				
-				console.log("str");
 				console.log("page:"+page);
-				if(page=='-1'){
+				if(page==-1){
 					pageNum=Math.ceil(replyCnt/10.0);
 					console.log("pageNum:"+pageNum);
 					showList(pageNum);
@@ -456,8 +455,9 @@ float:right;
 		
 		//댓글 추가 모달창   
 		$("#addReplyBtn").on("click",function(e){
-			//modal.find("input").val();
+			modal.find("input[name='reply']").val('');
 			modalInputReplyDate.closest('div').hide();
+			modal.find("input[name='replyer']").val(replyerName);
 			modal.find("button[id!='modalCloseBtn']").hide();
 			
 		   modalRegBtn.show();
@@ -534,9 +534,9 @@ float:right;
 			e.preventDefault();
 			e.stopPropagation();
 			var btn=e.target;
-		
+			modal.find("input[name='reply']").val('');
 			parent=btn.getAttribute("data-parent");
-			
+			modal.find("input[name='replyer']").val(replyerName);
 			modalInputReplyDate.closest('div').hide();
 			modal.find("button[id!='modalCloseBtn']").hide();
 		
@@ -562,7 +562,7 @@ float:right;
 				
 				modal.find("input").val("");
 				modal.modal("hide");
-				showList(1);
+				showList(-1);
 			});
 			
 		});

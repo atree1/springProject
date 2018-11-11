@@ -29,6 +29,12 @@ where member.userid=#{uid};
  
  </select>
   
+  <insert id="insertMember">
+  insert into tbl_member(userid,userpw,username)
+  values(#{userid},#{userpw},#{username})
+  
+  </insert>
+
 </mapper>
 
 

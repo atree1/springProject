@@ -4,7 +4,7 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/fmt" prefix="fmt"%>
 <%@ taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 <%@include file="../includes/header.jsp"%>
-<sec:authorize access="hasRole('ADMIN')">
+<%-- <sec:authorize access="hasRole('ADMIN')"> --%>
 
 <div class="col-lg-12 stretch-card">
 
@@ -117,8 +117,6 @@
  			<input type='hidden' name='display' value='${pageObj.display}'>
 	</form>
 </div>
-
-</sec:authorize>
 
 <%@include file="../includes/footer.jsp"%>
 <script type="text/javascript" src="/resources/js/jquery.cookie.js"></script>

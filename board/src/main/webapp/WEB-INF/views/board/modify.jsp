@@ -65,6 +65,12 @@ width:100%;
 	align-items: center;
 }
 </style>
+<sec:authentication var="user" property="principal" />
+	<c:if test="${board.writer!=user.username}">
+	<script>
+	window.location.href="/board/list";
+	</script>
+	</c:if>
 <div id=card class="col-md-6 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
@@ -104,7 +110,7 @@ width:100%;
 					<ul>
 					</ul>
 					</div>
-				</div>
+			
 				<input type='hidden' name='page' value='${pageObj.page}'>
 				 <input	type="hidden" name='bno' value='${board.bno}'> 
 				 <input type='hidden' name='type' value='${pageObj.type}'> 
@@ -112,7 +118,7 @@ width:100%;
 				<input type='hidden' name='display' value='${pageObj.display}'>
 
 			</form>
-
+	</div>
 			<form id='actionForm' action="/board/read">
 				<input type="hidden" name='bno' value='${board.bno}'> <input
 					type='hidden' name='page' value='${pageObj.page}'> <input
@@ -126,7 +132,6 @@ width:100%;
 
 		</div>
 	</div>
-</div>
 
 
 <!-- content-wrapper ends -->
