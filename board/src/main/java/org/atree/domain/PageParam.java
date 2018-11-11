@@ -29,6 +29,9 @@ public class PageParam {
 	}
 
 	public int getSkip() {
+		if(this.page==-1) {
+			this.page=1;
+		}
 		return (this.page - 1) * display;
 
 	}

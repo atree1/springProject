@@ -415,8 +415,8 @@ float:right;
 			function(replyCnt,list){
 				
 				console.log("str");
-				
-				if(page==-1){
+				console.log("page:"+page);
+				if(page=='-1'){
 					pageNum=Math.ceil(replyCnt/10.0);
 					console.log("pageNum:"+pageNum);
 					showList(pageNum);
@@ -479,7 +479,7 @@ float:right;
 				
 				modal.find("input").val("");
 				modal.modal("hide");
-				showList(1);
+				showList(-1);
 			});
 			});
 		
