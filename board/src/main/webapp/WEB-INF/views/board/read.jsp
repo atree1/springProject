@@ -162,13 +162,13 @@ float:right;
 	<div class="modal fade" id="myModal" tabindex="-1" role="dialog"
 		aria-labelledby="myModalLabel" aria-hidden="true">
 		<div class="modal-dialog">
-			<div class="modal-content">
+			<div class="modal-content" >
 				<div class="modal-header">
 					<button type="button" class="close" data-dismiss="modal"
 						aria-hidden="true">&times;</button>
 					<h4 class="modal-title" id="myModalLabel">Modal title</h4>
 				</div>
-				<div class="modal-body"></div>
+				<div class="modal-body" id="mBody"></div>
 				<div class="modal-footer">
 				</div>
 			</div>
@@ -262,7 +262,7 @@ float:right;
 			}
 
 			if (result === 'SUCCESS') {
-				$(".modal-body").html("작업이 완료되었습니다.");
+				$("#mBody").html("작업이 완료되었습니다.");
 				msg.modal("show");
 			}
 	
@@ -328,7 +328,7 @@ float:right;
 						
 						str += "<li data-path='"+attach.uploadPath+"' data-uuid='"+attach.uuid+"' data-filename='"+attach.fileName+"' data-type='"+attach.fileType+"' ><div>";
 						str += "<img src='/display?fileName="+fileCallPath+"'>";
-						str+="<p><a href='"+fileCallPath+"'>"+attach.fileName+"</a></p>"
+						str+="<p><a href='#'>"+attach.fileName+"</a></p>"
 						str += "</div>";
 						str +"</li>";
 						console.log("filePath: "+fileCallPath);
@@ -415,7 +415,7 @@ float:right;
 			function(replyCnt,list){
 				
 				console.log("page:"+page);
-				if(page==-1){
+				if(page===-1){
 					pageNum=Math.ceil(replyCnt/10.0);
 					console.log("pageNum:"+pageNum);
 					showList(pageNum);
@@ -509,7 +509,7 @@ float:right;
 			replyService.update(reply,function(result){
 				alert(result);
 				modal.modal("hide");
-				showList(1);
+				showList(pageNum);
 			})
 		});
 		
@@ -519,7 +519,7 @@ float:right;
 			replyService.remove(reply,function(result){
 				alert(result);
 				modal.modal("hide");
-				showList(1);
+				showList(pageNum);
 			})
 		})
 		
@@ -562,7 +562,7 @@ float:right;
 				
 				modal.find("input").val("");
 				modal.modal("hide");
-				showList(-1);
+				showList(pageNum);
 			});
 			
 		});

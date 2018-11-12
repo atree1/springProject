@@ -38,6 +38,7 @@
 		values(#{title},#{content},#{writer})
 	</insert>
 	<update id="upViewCnt">
+	
 		update tbl_board
 		set viewcnt=#{viewCnt}+1
 		 where

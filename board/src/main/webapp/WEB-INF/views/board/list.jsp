@@ -148,8 +148,8 @@ $(document).ready(function(){
 		var searchKeyword = $("input[name='keyword']").val();
 		console.log(searchKeyword);
 		
-		if(searchKeyword.trim().length == 0 ){
-			alert("검색어 없음");
+		if(searchKeyword.trim().length == 0 ||searchTypeValue==='--'){
+			alert("검색어 또는 검색조건 없음");
 			return;
 		}
 		

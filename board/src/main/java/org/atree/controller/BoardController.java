@@ -1,6 +1,5 @@
 package org.atree.controller;
 
-
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
@@ -39,106 +38,125 @@ import lombok.extern.log4j.Log4j;
 @AllArgsConstructor
 public class BoardController {
 
-	private BoardService service; 
+	private BoardService service;
+
 	@GetMapping("/list")
-	public void list(@ModelAttribute("pageObj")PageParam pageParam,Model model) {
+	public void list(@ModelAttribute("pageObj") PageParam pageParam, Model model) {
 		log.info("list get......................");
 		pageParam.setTotal(service.getTotal(pageParam));
-		model.addAttribute("list" ,service.getList(pageParam));
+		model.addAttribute("list", service.getList(pageParam));
 	}
 
 	@GetMapping("/register")
 	public void registerGET() {
-		
+
 	}
-	
+
 	@PostMapping("/register")
-	public String registerPost(RedirectAttributes rttr, @ModelAttribute ("board")@Valid BoardVO boardVO, BindingResult bindingResult) {
+	public String registerPost(RedirectAttributes rttr, @ModelAttribute("board") @Valid BoardVO boardVO,
+			BindingResult bindingResult) {
 		log.info("-----------------------------------------------");
-		log.info("binding:"+bindingResult);
-		if(boardVO.getAttachList()!=null) {
+		log.info("binding:" + bindingResult);
+		if (boardVO.getAttachList() != null) {
 			log.info("-----------------------------------------------");
-			boardVO.getAttachList().forEach(attach->log.info(attach));
+			boardVO.getAttachList().forEach(attach -> log.info(attach));
 		}
-		if(bindingResult.hasErrors()) {
+		if (bindingResult.hasErrors()) {
 			log.info("Has Error .........................");
 			return "redirect:/board/register";
 		}
-		
+
 		int result = service.register(boardVO);
-		rttr.addFlashAttribute("result", result==1?"SUCCESS":"FAIL");
-		
+		rttr.addFlashAttribute("result", result == 1 ? "SUCCESS" : "FAIL");
+
 		return "redirect:/board/list";
 	}
+
 	@GetMapping("/read")
-	public void read(@CookieValue(value = "viewcookie" ,required=false) String viewcookie,@ModelAttribute("pageObj")PageParam pageParam,Model model) {
-		
-//			log.info("viewcookie :"+viewcookie);
-//			BoardVO vo=service.read(pageParam);
-//			if(viewcookie==null) {
-//			response.addCookie(new Cookie("viewcookie",bno));
-//		
-//			  service.upViewCnt(vo);
-//			}
-//			else {
-//				if(viewcookie.contains(bno)) {
-//					
-//				}
-//				else {
-//					viewcookie+="/"+bno;
-//					service.upViewCnt(vo);
-//				}
-//			}
-			
+	public void read(@CookieValue(value = "viewCookie", required = false) String viewCookie,
+			@ModelAttribute("pageObj") PageParam pageParam, Model model) {
+
+		BoardVO vo = service.read(pageParam);
+
+		log.info(viewCookie);
+		if (viewCookie != null) {
+			String[] numbers = viewCookie.split("_");
+			boolean check = false;
+			String bno = "" + pageParam.getBno();
+			log.info(bno);
+
+			for (String number : numbers) {
+				log.info(number);
+				
+				if (number.equals(bno)) {
+					check = true;
+					log.info(check);
+					break;
+				}
+			}
+
+			if (!check) {
+				service.upViewCnt(vo);
+			}
+		}
 		log.info("read page..........");
 		log.info(pageParam);
-		model.addAttribute("board",service.read(pageParam));
-		
+		model.addAttribute("board", vo);
+
 	}
+
 	@GetMapping("/modify")
-	public void modify(@ModelAttribute("pageObj")PageParam pageParam,Model model) {
-		
+	public void modify(@ModelAttribute("pageObj") PageParam pageParam, Model model) {
+
 		log.info("modify page..........");
 		log.info(pageParam);
-		model.addAttribute("board",service.read(pageParam));
-		
+		model.addAttribute("board", service.read(pageParam));
+
 	}
+
 	@PostMapping("/modify")
-	public String modify(@ModelAttribute("pageObj")PageParam pageParam,@ModelAttribute("board")BoardVO boardVO,RedirectAttributes rttr) {
-		int result=service.modify(boardVO);
+	public String modify(@ModelAttribute("pageObj") PageParam pageParam, @ModelAttribute("board") BoardVO boardVO,
+			RedirectAttributes rttr) {
+		int result = service.modify(boardVO);
 		log.info("post modify......................................");
 		log.info(pageParam);
-		rttr.addFlashAttribute("result",result==1?"SUCCESS":"FAILED");
+		rttr.addFlashAttribute("result", result == 1 ? "SUCCESS" : "FAILED");
 		return pageParam.getLink("redirect:/board/read");
 	}
+
 	@PostMapping("/remove")
-	public String remove(@ModelAttribute("pageObj")PageParam pageParam,@ModelAttribute("board")BoardVO boardVO,RedirectAttributes rttr) {
-		int result=service.remove(boardVO);
-		if(result==1) {
-		List<BoardAttachDTO> attachList=service.getAttachList(pageParam.getBno());
+	public String remove(@ModelAttribute("pageObj") PageParam pageParam, @ModelAttribute("board") BoardVO boardVO,
+			RedirectAttributes rttr) {
+		int result = service.remove(boardVO);
+		if (result == 1) {
+			List<BoardAttachDTO> attachList = service.getAttachList(pageParam.getBno());
 		}
-		rttr.addFlashAttribute("result",result==1?"SUCCESS":"FAILED");
+		rttr.addFlashAttribute("result", result == 1 ? "SUCCESS" : "FAILED");
 		return pageParam.getLink("redirect:/board/list");
 	}
-	@GetMapping(value="/getAttachList",produces=MediaType.APPLICATION_JSON_UTF8_VALUE)
+
+	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
-	public ResponseEntity<List<BoardAttachDTO>> getAttachList(int bno){
-		
-		List<BoardAttachDTO> result=service.getAttachList(bno);
-		return new ResponseEntity<> (service.getAttachList(bno),HttpStatus.OK);
+	public ResponseEntity<List<BoardAttachDTO>> getAttachList(int bno) {
+
+		List<BoardAttachDTO> result = service.getAttachList(bno);
+		return new ResponseEntity<>(service.getAttachList(bno), HttpStatus.OK);
 	}
+
 	private void deleteFiles(List<BoardAttachDTO> attachList) {
-		if(attachList==null||attachList.size()==0) {
+		if (attachList == null || attachList.size() == 0) {
 			return;
 		}
-		attachList.forEach(attach->{
+		attachList.forEach(attach -> {
 			try {
-				Path file=Paths.get("C:\\upload\\"+attach.getUploadPath()+"\\"+attach.getUuid()+"_"+attach.getFileName());
-				
+				Path file = Paths.get(
+						"C:\\upload\\" + attach.getUploadPath() + "\\" + attach.getUuid() + "_" + attach.getFileName());
+
 				Files.deleteIfExists(file);
-			
-				if(Files.probeContentType(file).startsWith("image")) {
-					Path thumbNail=Paths.get("C:\\upload\\"+attach.getUploadPath()+"\\s_"+attach.getUuid()+"_"+attach.getFileName());
+
+				if (Files.probeContentType(file).startsWith("image")) {
+					Path thumbNail = Paths.get("C:\\upload\\" + attach.getUploadPath() + "\\s_" + attach.getUuid() + "_"
+							+ attach.getFileName());
 					Files.delete(thumbNail);
 				}
 			} catch (IOException e) {

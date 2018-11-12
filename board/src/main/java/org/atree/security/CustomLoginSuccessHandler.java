@@ -22,6 +22,7 @@ public class CustomLoginSuccessHandler extends SavedRequestAwareAuthenticationSu
 			authentication.getAuthorities().forEach(auth -> {
 				log.info(auth);
 			});
+			
 			super.onAuthenticationSuccess(request, response, authentication);
 		
 	}

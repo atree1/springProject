@@ -46,7 +46,7 @@ width:100%;
 
 
 </style>
-<sec:authentication var="user" property="principal" />
+
 <div id='card' class="col-md-12 grid-margin stretch-card">
 	<div class="card">
 		<div class="card-body">
@@ -54,7 +54,7 @@ width:100%;
 				<div class="form-group">
 					<label for="exampleInputEmail3">WRITER</label> <input type="text"
 						class="form-control" id="exampleInputEmail3"
-						 name='writer' value='<c:out value="${user.username}"/>' readonly="readonly">
+						 name='writer' value='<sec:authentication property="principal.username"/>' readonly="readonly">
 				</div>
 				<div class="form-group">
 					<label for="exampleInputName1">TITLE</label> <input type="text"
@@ -80,6 +80,7 @@ width:100%;
 		</div>
 		<form action="/board/list">
 			<div>
+	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> 
 				<button id='registerBtn' class="btn btn-success mr-2">등록</button>
 				<button id='cancleBtn' class="btn btn-danger">취소</button>
 			</div>
@@ -125,6 +126,7 @@ width:100%;
 				str += "<input type='hidden' name='attachList["+i+"].uuid' value='"+jobj.data("uuid")+"'>";
 				str += "<input type='hidden' name='attachList["+i+"].uploadPath' value='"+jobj.data("path")+"'>";
 				str += "<input type='hidden' name='attachList["+i+"].fileType' value='"+ jobj.data("type")+"'>";
+				
 				
 			})
 			console.log(str);
