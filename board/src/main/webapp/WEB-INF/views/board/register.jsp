@@ -21,6 +21,7 @@ width:100%;
 
 .uploadResult {
 	width: 100%;
+	min-height:250px;
 	background-color: gray;
 	overflow:auto;
 }
@@ -102,6 +103,38 @@ width:100%;
 	      $(document).ajaxSend(function(e,xhr,options){
 	         xhr.setRequestHeader(csrfHearderName, csrfTokenValue);
 	      });
+	      uploadResult.on("dragenter dragover" ,function(e){
+	    	  
+	    	 e.preventDefault(); 
+	      });
+	      uploadResult.on("drop",function(e){
+	    	  e.preventDefault();
+	    	  var formData=new FormData();
+	  		
+				var files=e.originalEvent.dataTransfer.files;
+				console.log(files);	
+				for(var i=0;i<files.length;i++){
+					if(!checkExtension(files[i].name,files[i].size)){
+						return false;
+					}
+					console.log(files[i]);
+					formData.append("uploadFile",files[i]);
+				}
+				$.ajax({
+					url:'/upload',
+					processData:false,
+					contentType:false,
+					data:formData,
+					type:'POST',
+					dataType:'json',
+					success:function(result){
+						console.log(result);
+						showUploadResult(result);
+					}
+				});
+	      })
+	      
+	      
 		$('.uploadResult').on("click","button",function(e){
 			e.preventDefault();
 			var targetFile=$(this).data("file");
@@ -153,6 +186,7 @@ width:100%;
 			return true;
 		}
 	
+		
 		$('#files').change(function(e){
 			var formData=new FormData();
 		

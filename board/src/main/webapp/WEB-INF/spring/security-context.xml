@@ -25,7 +25,7 @@
 
 		<security:form-login login-page="/user/login"
 			authentication-success-handler-ref="customLoginSuccess"
-			authentication-failure-handler-ref="customLoginSuccess" />
+		/>
 		<security:access-denied-handler
 			ref="customAccessDenied" />
 		<security:logout logout-url="/user/logout"
