@@ -75,12 +75,12 @@ width:100%;
 				<div class="uploadResult">
 				<ul></ul>
 				</div>
-
+				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> 
 			</form>
 		</div>
 		<form action="/board/list">
 			<div>
-	<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> 
+		
 				<button id='registerBtn' class="btn btn-success mr-2">등록</button>
 				<button id='cancleBtn' class="btn btn-danger">취소</button>
 			</div>
@@ -96,7 +96,12 @@ width:100%;
 <script>
 	$(document).ready(function() {
 		var uploadResult=$('.uploadResult');
-		
+	    var csrfHearderName = "${_csrf.headerName}";
+	      var csrfTokenValue = "${_csrf.token}";
+	      
+	      $(document).ajaxSend(function(e,xhr,options){
+	         xhr.setRequestHeader(csrfHearderName, csrfTokenValue);
+	      });
 		$('.uploadResult').on("click","button",function(e){
 			e.preventDefault();
 			var targetFile=$(this).data("file");

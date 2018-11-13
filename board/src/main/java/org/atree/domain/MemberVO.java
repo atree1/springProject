@@ -3,14 +3,15 @@ package org.atree.domain;
 import java.util.Date;
 import java.util.List;
 
+import org.hibernate.validator.constraints.NotEmpty;
+
 import lombok.Data;
 
 @Data
 public class MemberVO {
 	
-	private String userid;
-	private String userpw;
-	private String username;
+	@NotEmpty
+	private String userid,userpw,username;
 	private boolean enabled;
 	
 	private Date regdate;

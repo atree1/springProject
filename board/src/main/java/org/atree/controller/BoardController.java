@@ -115,11 +115,16 @@ public class BoardController {
 	}
 
 	@PostMapping("/modify")
-	public String modify(@ModelAttribute("pageObj") PageParam pageParam, @ModelAttribute("board") BoardVO boardVO,
-			RedirectAttributes rttr) {
+	public String modify(RedirectAttributes rttr,@ModelAttribute("pageObj") PageParam pageParam, @ModelAttribute("board") @Valid BoardVO boardVO,
+			BindingResult bindingResult) {
 		int result = service.modify(boardVO);
 		log.info("post modify......................................");
 		log.info(pageParam);
+		if (bindingResult.hasErrors()) {
+			log.info("Has Error .........................");
+			return "redirect:/board/modify";
+		}
+
 		rttr.addFlashAttribute("result", result == 1 ? "SUCCESS" : "FAILED");
 		return pageParam.getLink("redirect:/board/read");
 	}

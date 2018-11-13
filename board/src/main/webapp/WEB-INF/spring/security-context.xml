@@ -30,7 +30,7 @@
 			ref="customAccessDenied" />
 		<security:logout logout-url="/user/logout"
 			invalidate-session="true" />
-		<security:csrf disabled="true" />
+		
 		<security:remember-me data-source-ref="dataSource" token-validity-seconds="604800"/>
 	</security:http>
 

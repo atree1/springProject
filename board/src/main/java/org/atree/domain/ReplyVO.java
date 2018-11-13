@@ -9,11 +9,13 @@ import lombok.Data;
 @Data
 public class ReplyVO {
 
+	
 	private int rno,bno,parent,seq,depth;
 	@NotEmpty(message="占쏙옙占쏙옙占� 占쌉뤄옙占싹쇽옙占쏙옙")
 	private String reply;
+	@NotEmpty
 	private String replyer;
 	@DateTimeFormat(pattern="yyyy-MM-dd")
 	private Date replydate,updatedate;
-	
+
 }

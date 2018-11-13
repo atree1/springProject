@@ -119,17 +119,25 @@ width:100%;
  				<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> 
 			</form>
 	</div>
-			<form id='actionForm' action="/board/read">
-				<input type="hidden" name='bno' value='${board.bno}'> <input
-					type='hidden' name='page' value='${pageObj.page}'> <input
-					type='hidden' name='type' value='${pageObj.type}'> <input
-					type='hidden' name='keyword' value='${pageObj.keyword}'>
-					<input type='hidden' name='display' value='${pageObj.display}'>
+			<form action="/board/remove" method="post">
+				
+				<input type="hidden" name='bno' value='${board.bno}'> 
+				<input type='hidden' name='page' value='${pageObj.page}'>
+				 <input type='hidden' name='type' value='${pageObj.type}'> 
+				 <input type='hidden' name='keyword' value='${pageObj.keyword}'>
+				 <input type='hidden' name='display' value='${pageObj.display}'>
+					<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}"> 
 				<button id='modifyBtn' class="btn btn-success">수정</button>
 				<button id='removeBtn' class="btn btn-warning">삭제</button>
 				<button id='cancleBtn' class="btn btn-danger">취소</button>
 			</form>
-
+			<form id='actionForm' action="/board/read">
+				<input type="hidden" name='bno' value='${board.bno}'> 
+				<input type='hidden' name='page' value='${pageObj.page}'> 
+				<input type='hidden' name='type' value='${pageObj.type}'> 
+				<input type='hidden' name='keyword' value='${pageObj.keyword}'>
+				<input type='hidden' name='display' value='${pageObj.display}'>
+			</form>
 		</div>
 	</div>
 
@@ -147,7 +155,12 @@ width:100%;
 		var regex=new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 		var maxSize=5242880;
 		
-		
+	    var csrfHearderName = "${_csrf.headerName}";
+	      var csrfTokenValue = "${_csrf.token}";
+	      
+	      $(document).ajaxSend(function(e,xhr,options){
+	         xhr.setRequestHeader(csrfHearderName, csrfTokenValue);
+	      });
 		//이미지 리스트 출력
 		(function() {
 			var bno='<c:out value="${board.bno}"/>';
@@ -202,9 +215,9 @@ width:100%;
 		});
 		
 		//삭제버튼
-		$('#removeBtn').on("click", function(e) {
+		$('#cancleBtn').on("click", function(e) {
 			e.preventDefault();
-			$("#actionForm").attr("method",'post').submit();
+				$("#actionForm").submit();
 		});
 		
 		//이미지 삭제

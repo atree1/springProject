@@ -12,8 +12,16 @@ li{
  list-style:none;
  
 }
+
+
+#repWrapper li{
+	border:1px solid lightgray;
+	border-collapse:collapse;
+	padding:15px;
+}
 .page-item{
 	display: inline-flex;
+	border:none;
 }
 small{
 float:right}
@@ -90,18 +98,18 @@ float:right;
 
 			<div class="form-group">
 				<label for="exampleInputName1">BNO</label> <input type="text"
-					class="form-control" id="exampleInputName1" placeholder="Name"
+					class="form-control" id="exampleInputName1" 
 					value='<c:out value="${board.bno}"/>' readonly="readonly">
 			</div>
 			<div class="form-group">
 				<label for="exampleInputEmail3">WRITER</label> <input type="email"
-					class="form-control" id="exampleInputEmail3" placeholder="Email"
+					class="form-control" id="exampleInputEmail3" placeholder="writer"
 					value='<c:out value="${board.writer}"/>' readonly="readonly">
 			</div>
 			<div class="form-group">
 				<label for="exampleInputPassword4">TITLE</label> <input type="text"
 					class="form-control" id="exampleInputPassword4"
-					placeholder="Password" value='<c:out value="${board.title}"/>'
+					placeholder="title" value='<c:out value="${board.title}"/>'
 					readonly="readonly">
 			</div>
 
@@ -143,9 +151,11 @@ float:right;
 			<div class="panel panel-default">
 			<div class="panel-heading">
 				<i class="fa fa-superpowers"></i>Reply
+				
 				<button id='addReplyBtn' class='btn-primary' >New Reply</button>
+			
 			</div>
-			<div class="panel-body">
+			<div  id ='repWrapper'  class="panel-body">
 				<ul class="chat">
 				
 				</ul>
@@ -252,6 +262,13 @@ float:right;
 		
 		
 		var parent=0;
+		
+	    var csrfHearderName = "${_csrf.headerName}";
+	      var csrfTokenValue = "${_csrf.token}";
+	      
+	      $(document).ajaxSend(function(e,xhr,options){
+	         xhr.setRequestHeader(csrfHearderName, csrfTokenValue);
+	      });
 		//모달창 출력
 		checkModal(result);
 		history.replaceState({}, null, null);
@@ -434,7 +451,7 @@ float:right;
 						
 						str+="<li class='left clearfix' data-rno='"+list[i].rno+"'>";
 						if(list[i].depth==1){
-							str+=" <div style='margin-left:30px'><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>";
+							str+=" -><div style='margin-left:30px'><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>";
 						}else{
 					str+=" <div><div class='header'><strong class='primary-font'>"+list[i].replyer+"</strong>";
 						}
@@ -493,9 +510,10 @@ float:right;
 				 modal.data("rno",reply.rno);
 				 
 				 modal.find("button[id !='modalCloseBtn']").hide();
+				 if(replyerName===reply.replyer){
 				 modalModBtn.show();
 				 modalDelBtn.show();
-				 
+				 }
 				 modal.modal("show");
 			 
 			 
