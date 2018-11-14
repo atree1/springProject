@@ -21,7 +21,7 @@
     <!-- partial:../resources/partials/_navbar.html -->
     <nav class="navbar default-layout col-lg-12 col-12 p-0 fixed-top d-flex flex-row">
       <div class="text-center navbar-brand-wrapper d-flex align-items-top justify-content-center">
-        <a class="navbar-brand brand-logo" href="../resources/index.html">
+        <a class="navbar-brand brand-logo" href="/board/list">
           <img src="../resources/images/logo.svg" alt="logo" />
         </a>
         <a class="navbar-brand brand-logo-mini" href="../resources/index.html">
@@ -183,8 +183,8 @@
               <a class="dropdown-item">
                 Check Inbox
               </a> -->
-              <a class="dropdown-item">
-                <a href="/user/logout">Sign Out</a>
+              <a class="dropdown-item" style="left:15px;">
+                <a href="/user/logout"><button class="btn btn-dark btn-fw">Sign Out</button></a>
               </a>
             </div>
           </li>

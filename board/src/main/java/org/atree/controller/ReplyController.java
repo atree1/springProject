@@ -55,6 +55,8 @@ public class ReplyController {
 		pageParam.setRno(rno);
 		return new ResponseEntity<ReplyVO>(service.read(pageParam),HttpStatus.OK);
 	}
+	
+	
 	@PreAuthorize("principal.username==#vo.replyer")
 	@RequestMapping(method= {RequestMethod.PUT,RequestMethod.PATCH},value="/{rno}",consumes="application/json",
 			produces= {MediaType.TEXT_PLAIN_VALUE})
@@ -64,6 +66,8 @@ public class ReplyController {
 		int result=service.modify(vo);
 		return result==1?new ResponseEntity<String>("success",HttpStatus.OK):new ResponseEntity<String> (HttpStatus.INTERNAL_SERVER_ERROR);
 	}
+	
+	
 	@PreAuthorize("principal.username==#vo.replyer")
 	@RequestMapping(method= {RequestMethod.PUT,RequestMethod.PATCH},value="/delete/{rno}",consumes="application/json",
 			produces= {MediaType.TEXT_PLAIN_VALUE})

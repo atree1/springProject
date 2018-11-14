@@ -150,7 +150,7 @@ float:right;
 		<div class='col-lg-12'>
 			<div class="panel panel-default">
 			<div class="panel-heading">
-				<i class="fa fa-superpowers"></i>Reply
+				<i class="fa-comments-o">Reply</i>Reply
 				
 				<button id='addReplyBtn' class='btn-primary' >New Reply</button>
 			
@@ -259,10 +259,7 @@ float:right;
 		var modalRegBtn=$("#modalRegBtn");
 		var modalRegBtn2=$("#modalRegBtn2");
 		var modalCloseBtn=$("#modalCloseBtn");
-		
-		
 		var parent=0;
-		
 	    var csrfHearderName = "${_csrf.headerName}";
 	      var csrfTokenValue = "${_csrf.token}";
 	      

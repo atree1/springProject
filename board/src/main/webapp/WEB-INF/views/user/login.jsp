@@ -1,7 +1,9 @@
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c"%>
+
+
 <!DOCTYPE html>
 <html lang="utf-8">
-
+<script type="text/javascript" src="https://static.nid.naver.com/js/naveridlogin_js_sdk_2.0.0.js" charset="utf-8"></script>
 <head>
 <!-- Required meta tags -->
 <meta charset="utf-8">
@@ -77,6 +79,8 @@
 										class="text-black text-small">Create new account</a>
 								</div>
 							</form>
+							
+							<div id="naverIdLogin"></div>
 						</div>
 						<ul class="auth-footer">
 							<li><a href="#">Conditions</a></li>
@@ -102,5 +106,18 @@
 	<script src="../../resources/js/misc.js"></script>
 	<!-- endinject -->
 </body>
+<script type="text/javascript">
+	var naverLogin = new naver.LoginWithNaverId(
+		{
+			clientId: "e7vNKtgJfKz6nTew8_nv",
+			callbackUrl: "/user/callback",
+			isPopup:true, 
+			loginButton: {color: "green", type: 3, height: 40} 
+		}
+	);
+	
 
+	naverLogin.init();
+	
+</script>
 </html>

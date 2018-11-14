@@ -103,6 +103,7 @@ width:100%;
 	      $(document).ajaxSend(function(e,xhr,options){
 	         xhr.setRequestHeader(csrfHearderName, csrfTokenValue);
 	      });
+	      
 	      uploadResult.on("dragenter dragover" ,function(e){
 	    	  
 	    	 e.preventDefault(); 

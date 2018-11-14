@@ -19,6 +19,7 @@ width:100%;
 
 .uploadResult {
 	width: 100%;
+	min-height:200px;
 	background-color: gray;
 	overflow:auto;
 }
@@ -154,13 +155,44 @@ width:100%;
 	
 		var regex=new RegExp("(.*?)\.(exe|sh|zip|alz)$");
 		var maxSize=5242880;
-		
+		var uploadResult=$('.uploadResult');
 	    var csrfHearderName = "${_csrf.headerName}";
 	      var csrfTokenValue = "${_csrf.token}";
 	      
 	      $(document).ajaxSend(function(e,xhr,options){
 	         xhr.setRequestHeader(csrfHearderName, csrfTokenValue);
 	      });
+	      
+	      uploadResult.on("dragenter dragover" ,function(e){
+	    	  
+		    	 e.preventDefault(); 
+		      });
+		      uploadResult.on("drop",function(e){
+		    	  e.preventDefault();
+		    	  var formData=new FormData();
+		  		
+					var files=e.originalEvent.dataTransfer.files;
+					console.log(files);	
+					for(var i=0;i<files.length;i++){
+						if(!checkExtension(files[i].name,files[i].size)){
+							return false;
+						}
+						console.log(files[i]);
+						formData.append("uploadFile",files[i]);
+					}
+					$.ajax({
+						url:'/upload',
+						processData:false,
+						contentType:false,
+						data:formData,
+						type:'POST',
+						dataType:'json',
+						success:function(result){
+							console.log(result);
+							showUploadResult(result);
+						}
+					});
+		      })
 		//이미지 리스트 출력
 		(function() {
 			var bno='<c:out value="${board.bno}"/>';

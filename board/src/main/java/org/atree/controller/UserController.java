@@ -33,6 +33,12 @@ public class UserController {
 		
 		
 	}
+	@GetMapping("/callback")
+	public void callback() {
+		log.info("login get~~~~");
+		
+		
+	}
 	@GetMapping("/logout")
 	public void logoutGet() {
 		log.info("custom logout");
