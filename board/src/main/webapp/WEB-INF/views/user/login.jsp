@@ -112,6 +112,7 @@
 			clientId: "e7vNKtgJfKz6nTew8_nv",
 			callbackUrl: "/user/callback",
 			isPopup:true, 
+			callbackHandle: true
 			loginButton: {color: "green", type: 3, height: 40} 
 		}
 	);

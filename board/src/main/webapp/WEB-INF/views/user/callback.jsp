@@ -10,14 +10,16 @@
 
 <body>
 <script>
-		window.addEventListener('load', function () {
-			naverLogin.getLoginStatus(function (status) {
-	window.location.replace("http://10.10.10.94:8080/board/list");
-				} else {
-					console.log("callback 처리에 실패하였습니다.");
-				}
-			});
-		});
+window.addEventListener('load', function () {
+	naverLogin.getLoginStatus(function (status) {
+		if (status) {
+		
+			window.location.replace("http:/localhost:8080/user/login");
+		} else {
+			console.log("callback 처리에 실패하였습니다.");
+		}
+	});
+});
 	</script>
 </body>
 

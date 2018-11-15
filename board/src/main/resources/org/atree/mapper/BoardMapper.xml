@@ -86,6 +86,19 @@
 		update tbl_board set replycnt=replycnt+#{amount} where bno=#{bno}
 	</update>
 	
+	
+	<update id="updLikeCnt">
+	
+		update tbl_board set like=like+#{amount} where bno=#{bno}
+	</update>
+	
+	<select id="getLikeCount" resultType="integer">
+		select like
+		from tbl_board where bno=#{bno};
+	</select>
+	
+	
+	
 	<insert id="insertSelectKey">
 		insert into
 		tbl_board(title,content,writer)

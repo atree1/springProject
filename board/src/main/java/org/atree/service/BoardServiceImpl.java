@@ -4,9 +4,11 @@ import java.util.List;
 
 import org.atree.domain.BoardAttachDTO;
 import org.atree.domain.BoardVO;
+import org.atree.domain.LikeVO;
 import org.atree.domain.PageParam;
 import org.atree.mapper.BoardAttachMapper;
 import org.atree.mapper.BoardMapper;
+import org.atree.mapper.LikeMapper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -23,6 +25,9 @@ public class BoardServiceImpl implements BoardService {
 
 	@Setter(onMethod_ = @Autowired)
 	private BoardAttachMapper attachMapper;
+
+	@Setter(onMethod_ = @Autowired)
+	private LikeMapper likeMapper;
 
 	@Transactional
 	@Override
@@ -95,6 +100,21 @@ public class BoardServiceImpl implements BoardService {
 	public int upViewCnt(BoardVO vo) {
 		// TODO Auto-generated method stub
 		return mapper.upViewCnt(vo);
+	}
+
+	@Transactional
+	@Override
+	public int updownLike(BoardVO vo) {
+		// TODO Auto-generated method stub
+		LikeVO likeVO = likeMapper.getLike(vo);
+
+		if (likeVO == null) {
+			likeMapper.insertLike(likeVO);
+			
+		}
+
+		return 1;
+
 	}
 
 }
