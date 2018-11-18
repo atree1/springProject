@@ -1,7 +1,10 @@
 package org.atree.service;
 
+import org.atree.domain.LikeVO;
 import org.atree.domain.PageParam;
 import org.atree.domain.ReplyVO;
+import org.atree.mapper.BoardMapper;
+import org.atree.mapper.LikeMapper;
 import org.atree.mapper.ReplyMapper;
 import org.junit.Test;
 import org.junit.runner.RunWith;
@@ -19,6 +22,24 @@ public class replyMapperTests {
 
 	@Setter(onMethod_=@Autowired)
 	ReplyMapper mapper;
+	@Setter(onMethod_=@Autowired)
+	BoardMapper bmapper;
+	
+	
+	@Setter(onMethod_=@Autowired)
+	BoardService service;
+	@Setter(onMethod_=@Autowired)
+	LikeMapper lMapper;
+	@Test
+	public void likeTest() {
+	lMapper.getLike(new LikeVO(23,"atree"));
+	}
+	@Test
+	public void testService() {
+		
+		log.info(service.updateLike(23,"atree"));
+		
+	}
 	@Test
 	public void test(){
 		ReplyVO vo=new ReplyVO();

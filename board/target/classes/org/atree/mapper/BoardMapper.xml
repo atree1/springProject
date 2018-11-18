@@ -87,13 +87,13 @@
 	</update>
 	
 	
-	<update id="updLikeCnt">
+	<update id="updateLike">
 	
-		update tbl_board set like=like+#{amount} where bno=#{bno}
+		update tbl_board set likecnt=likecnt+#{amount} where bno=#{bno}
 	</update>
 	
 	<select id="getLikeCount" resultType="integer">
-		select like
+		select likecnt
 		from tbl_board where bno=#{bno};
 	</select>
 	

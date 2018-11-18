@@ -12,7 +12,11 @@ li{
  list-style:none;
  
 }
-
+#like{
+ display:flex;
+	 align-items: center;
+	 justify-content: center;
+}
 
 #repWrapper li{
 	border:1px solid lightgray;
@@ -132,7 +136,11 @@ float:right;
 				</ul>
 			</div>
 		
-			
+			<div id='like'>
+				<button id=likeBtn class="btn btn-warning">좋아요</button>
+				<button id='likeCnt' class='btn btn-outline-warning'><c:out value="${board.likeCnt}"/></button>
+				
+			</div>
 			
 			<form id='actionForm' action='/board/list'>
 				<input type='hidden' name='page' value='${pageObj.page}'>
@@ -262,11 +270,18 @@ float:right;
 		var parent=0;
 	    var csrfHearderName = "${_csrf.headerName}";
 	      var csrfTokenValue = "${_csrf.token}";
-	      
-	      $(document).ajaxSend(function(e,xhr,options){
+	  
+	    
+	     
+	     
+	     
+	     $(document).ajaxSend(function(e,xhr,options){
 	         xhr.setRequestHeader(csrfHearderName, csrfTokenValue);
 	      });
 		//모달창 출력
+		
+		
+		
 		checkModal(result);
 		history.replaceState({}, null, null);
 		
@@ -283,6 +298,38 @@ float:right;
 		}
 	
 	
+	$('#likeBtn').on("click",function(e){
+			console.log("likeclick");
+			
+			(function() {
+			
+				$.ajax({
+					type:'get',
+					url:'/board/like',
+					data:{
+						'bno':bnoValue,
+						'userid':replyerName
+						},
+					
+					contentType:"application/json; charset=utf-8",
+					success:function(result,status,xhr){
+						
+							console.log(result);
+							$('#likeCnt').html(result);
+		
+					},	error:function(xhr,status,er){
+						if(error){
+							error(er);
+						}
+					}
+				
+					
+				});
+				
+			})();
+			
+	});
+			
 	
 		//이미지 클릭시 원본이미지 보여주기 파일 다운로드
 		$('.uploadResult').on("click","li",function(e){

@@ -18,6 +18,6 @@ public interface BoardMapper {
 	public void updateReplyCnt(@Param("bno") int bno,@Param("amount") int amount);
 	public int insertSelectKey(BoardVO vo);
 	public int upViewCnt(BoardVO vo);
-	public int upLikeCnt(BoardVO vo);
+	public void updateLike(@Param("bno") int bno,@Param("amount") int amount);
 	public int getLikeCount(int bno);
 }

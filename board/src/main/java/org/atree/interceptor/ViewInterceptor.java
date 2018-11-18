@@ -38,7 +38,7 @@ public class ViewInterceptor extends HandlerInterceptorAdapter{
 				log.info("cookievalue:"+cks[i].getValue());
 				
 			
-				if(cks[i].getValue().contains(""+boardVO.getBno())) {
+				if(cks[i].getValue().equals(""+boardVO.getBno())) {
 					break;
 				}
 				String value=(String)(cks[i].getValue())+"_"+boardVO.getBno();

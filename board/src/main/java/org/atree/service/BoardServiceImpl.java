@@ -97,6 +97,7 @@ public class BoardServiceImpl implements BoardService {
 	}
 
 	@Override
+	
 	public int upViewCnt(BoardVO vo) {
 		// TODO Auto-generated method stub
 		return mapper.upViewCnt(vo);
@@ -104,16 +105,24 @@ public class BoardServiceImpl implements BoardService {
 
 	@Transactional
 	@Override
-	public int updownLike(BoardVO vo) {
+	public int updateLike(int bno,String userid) {
 		// TODO Auto-generated method stub
-		LikeVO likeVO = likeMapper.getLike(vo);
+		LikeVO likeVO = likeMapper.getLike(new LikeVO(bno,userid));
 
 		if (likeVO == null) {
-			likeMapper.insertLike(likeVO);
+			likeMapper.insertLike(new LikeVO(bno,userid));
+			mapper.updateLike(bno, 1);
+			return mapper.getLikeCount(bno);
 			
 		}
+		else {
+			likeMapper.deleteLike(likeVO);
+			mapper.updateLike(bno, -1);
+			return mapper.getLikeCount(bno);
+		
+		}
 
-		return 1;
+		
 
 	}
 

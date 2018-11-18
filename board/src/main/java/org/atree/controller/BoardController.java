@@ -14,6 +14,7 @@ import javax.validation.Valid;
 import org.atree.domain.BoardAttachDTO;
 import org.atree.domain.BoardVO;
 import org.atree.domain.PageParam;
+import org.atree.domain.ReplyVO;
 import org.atree.service.BoardService;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
@@ -25,7 +26,9 @@ import org.springframework.web.bind.annotation.CookieValue;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 
@@ -139,7 +142,13 @@ public class BoardController {
 		rttr.addFlashAttribute("result", result == 1 ? "SUCCESS" : "FAILED");
 		return pageParam.getLink("redirect:/board/list");
 	}
-
+	@GetMapping(value="/like",produces = MediaType.APPLICATION_JSON_UTF8_VALUE,consumes="application/json" )
+	@ResponseBody
+	public ResponseEntity<Integer> updateLike(@RequestParam("bno")int bno,@RequestParam("userid")String userid){
+		
+		
+		return new ResponseEntity<>(service.updateLike(bno,userid),HttpStatus.OK);
+	}
 	@GetMapping(value = "/getAttachList", produces = MediaType.APPLICATION_JSON_UTF8_VALUE)
 	@ResponseBody
 	public ResponseEntity<List<BoardAttachDTO>> getAttachList(int bno) {
