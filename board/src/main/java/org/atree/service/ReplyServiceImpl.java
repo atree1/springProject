@@ -67,7 +67,7 @@ public class ReplyServiceImpl implements ReplyService {
 	@Override
 	public ReplyPageDTO getListPage(PageParam pageParam) {
 		// TODO Auto-generated method stub
-		return new ReplyPageDTO(mapper.count(pageParam),mapper.depthGetList(pageParam));
+		return new ReplyPageDTO(mapper.count(pageParam),mapper.parentCount(pageParam),mapper.depthGetList(pageParam));
 	}
 
 

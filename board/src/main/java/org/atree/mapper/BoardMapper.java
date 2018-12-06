@@ -14,6 +14,7 @@ public interface BoardMapper {
 	public int delete(BoardVO vo);
 	public List<BoardVO> getList(PageParam pageParam);
 	public int count(PageParam pageParam);
+
 	public int maxBno();
 	public void updateReplyCnt(@Param("bno") int bno,@Param("amount") int amount);
 	public int insertSelectKey(BoardVO vo);

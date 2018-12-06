@@ -17,6 +17,7 @@
 	</delete>
 	
 	<select id="findByBno" resultType="org.atree.domain.BoardAttachDTO">
+	
 	select * from tbl_attach where bno=#{bno}
 	
 	</select>

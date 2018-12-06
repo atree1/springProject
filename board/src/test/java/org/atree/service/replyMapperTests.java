@@ -37,7 +37,7 @@ public class replyMapperTests {
 	@Test
 	public void testService() {
 		
-		log.info(service.updateLike(23,"atree"));
+		log.info(service.updateLike(464607,"atree"));
 		
 	}
 	@Test

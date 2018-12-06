@@ -27,8 +27,8 @@ var replyService = (function() {
 		$.getJSON("/replies/pages/"+bno+"/"+page+".json",
 				function(data){
 			if(callback){
-				callback(data.replyCnt,data.list);
-				console.log(data.replyCnt,data.list);
+				callback(data.replyCnt,data.parentCnt,data.list);
+				console.log(data.replyCnt,data.parentCnt,data.list);
 			}
 		}).fail(function(xhr,status,err){
 			if(error){

@@ -473,7 +473,7 @@ float:right;
 		//댓글 리스트 출력
 		function showList(page){
 			replyService.getList({bno:bnoValue ,page:page||1},
-			function(replyCnt,list){
+			function(replyCnt,parentCnt,list){
 				
 				console.log("page:"+page);
 				if(page===-1){
@@ -506,7 +506,7 @@ float:right;
 				
 				}
 				
-				parent=list[list.length-1].parent;
+				parent=parentCnt;
 				replyUL.html(str);
 				showReplyPage(replyCnt);
 			});

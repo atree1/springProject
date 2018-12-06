@@ -35,7 +35,13 @@
 		where rno>0 and bno=#{bno} and deleted='N'
 		
 	</select>
+	<select id="parentCount" resultType="integer">
 
+		select max(parent)
+		from tbl_reply
+		where rno>0 and bno=#{bno} and deleted='N'
+		
+	</select>
 	<update id="update">
 		update tbl_reply
 		set reply=#{reply},

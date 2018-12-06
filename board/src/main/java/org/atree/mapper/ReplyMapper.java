@@ -14,6 +14,7 @@ public interface ReplyMapper {
 	public int delete(ReplyVO vo);
 	public List<ReplyVO> getList(PageParam pageParam);
 	public int count(PageParam pageParam);
+	public int parentCount(PageParam pageParam);
 	public int depthInsert(ReplyVO vo);
 	public List<ReplyVO> depthGetList(PageParam pageParam);
 }

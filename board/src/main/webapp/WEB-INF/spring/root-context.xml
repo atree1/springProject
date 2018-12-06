@@ -17,7 +17,7 @@
 	<!-- Root Context: defines shared resources visible to all other web components -->
 	<bean id="hikariConfig" class="com.zaxxer.hikari.HikariConfig">
 		<property name="jdbcUrl"
-			value="jdbc:mysql://localhost:3306/atree?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;logger=com.mysql.jdbc.log.Slf4JLogger&amp;profileSQL=false&amp;allowPublicKeyRetrieval=true"></property>
+			value="jdbc:mysql://10.10.10.105:3306/atree?useSSL=false&amp;serverTimezone=Asia/Seoul&amp;logger=com.mysql.jdbc.log.Slf4JLogger&amp;profileSQL=false&amp;allowPublicKeyRetrieval=true"></property>
 		<property name="driverClassName"
 			value="com.mysql.jdbc.Driver"></property>
 		<property name="username" value="atree"></property>
