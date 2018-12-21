@@ -80,11 +80,11 @@ public class BoardController {
 			@ModelAttribute("pageObj") PageParam pageParam, Model model) {
 
 		BoardVO vo = service.read(pageParam);
-
+		boolean check = false;
 		log.info(viewCookie);
 		if (viewCookie != null) {
 			String[] numbers = viewCookie.split("_");
-			boolean check = false;
+			
 			String bno = "" + pageParam.getBno();
 			log.info(bno);
 
@@ -98,10 +98,11 @@ public class BoardController {
 				}
 			}
 
-			if (!check) {
+		}
+		if (!check) {
 				service.upViewCnt(vo);
 			}
-		}
+		
 		log.info("read page..........");
 		log.info(pageParam);
 		model.addAttribute("board", vo);
