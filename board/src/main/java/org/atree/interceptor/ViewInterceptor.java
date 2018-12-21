@@ -32,14 +32,18 @@ public class ViewInterceptor extends HandlerInterceptorAdapter{
 		}
 		
 		
-		for (int i=0;i<cks.length;i++) {
+		Loop1:for (int i=0;i<cks.length;i++) {
 			if(cks[i].getName().equals("viewCookie")) {
 				check=true;
 				log.info("cookievalue:"+cks[i].getValue());
 				
-			
-				if(cks[i].getValue().equals(""+boardVO.getBno())) {
-					break;
+				String[] values=cks[i].getValue().split("_");
+				for (String val : values) {
+				
+					if(val.equals(""+boardVO.getBno())) {
+						break Loop1;
+				}
+				
 				}
 				String value=(String)(cks[i].getValue())+"_"+boardVO.getBno();
 				Cookie viewCookie=new Cookie("viewCookie",URLEncoder.encode(value,"UTF-8"));
